@@ -22,6 +22,3 @@ def rank_fighters(array)
   fighters_ranked = array.sort_by {|fighter| fighter["wins"]}
   fighters_ranked
 end
-
-
-binding.pry
