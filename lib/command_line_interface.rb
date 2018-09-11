@@ -6,6 +6,7 @@ def introduce_user
   puts "Welcome to our world! What is your character's name?"
   name = gets.chomp
   Character.new_character(name)
+  start_inventory
   puts "Hello #{name}! What would you like to do?"
   help_reminder
 end
@@ -43,4 +44,11 @@ end
 
 def go_to_cave
   current_location.update(name: "Cave", water: false, resource: "stone")
+end
+
+def start_inventory
+  wood = Inventory.create(name: "wood", count: 0)
+  stone = Inventory.create(name: "stone", count: 0)
+  sand = Inventory.create(name: "sand", count: 0)
+  water = Inventory.create(name: "water", count: 0)
 end
