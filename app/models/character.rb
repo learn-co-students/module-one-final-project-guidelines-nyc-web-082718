@@ -1,4 +1,5 @@
 class Character < ActiveRecord::Base
+  has_many :inventories
   has_many :characterenvironments
   has_many :shelters
   has_many :environments, through: :characterenvironments

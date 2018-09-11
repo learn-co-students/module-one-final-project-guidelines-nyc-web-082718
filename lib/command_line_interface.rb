@@ -2,7 +2,6 @@ require 'pry'
 require_relative '../config/environment'
 require_all 'app'
 
-Environment.create_environments
 def introduce_user
   puts "Welcome to our world! What is your character's name?"
   name = gets.chomp
@@ -28,4 +27,20 @@ def help
   puts "- drink: allows you to drink water and increases your thirst stat"
   puts "- sleep: allows you to sleep and increases your sleep stat"
   puts "- collect: allows you to collect a resource and adds it to your inventory"
+end
+
+def go_to_forest
+  current_location.update(name: "Forest", water: true, resource: "wood")
+end
+
+def go_to_desert
+  current_location.update(name: "Desert", water: false, resource: "sand")
+end
+
+def go_to_lake
+  current_location.update(name: "Lake", water: true, resource: "water")
+end
+
+def go_to_cave
+  current_location.update(name: "Cave", water: false, resource: "stone")
 end
