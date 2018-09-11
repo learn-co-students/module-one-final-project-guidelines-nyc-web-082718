@@ -10,8 +10,15 @@ end
 
 def get_weight_class(gender)
   puts "What is your fighter's weight class?"
-  puts HELPER METHOD
-  gets.chomp.downcase
+  if gender == "m"
+    puts "Strawweight, Flyweight, Bantamweight, Lightweight, Super_lightweight, Welterweight, Middleweight, Light_heavyweight or Heavyweight"
+    gets.chomp.downcase
+  elsif gender == "f"
+    puts "Strawweight, Flyweight, Bantamweight or Featherweight"
+    gets.chomp.downcase
+  else
+    puts "Please choose a gender with the format M/F"
+  end
 end
 
 def get_name
