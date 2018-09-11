@@ -3,10 +3,13 @@ require_relative "../lib/api_communicator.rb"
 require_relative "../lib/command_line_interface.rb"
 
 welcome
-gender = get_gender
+# gender = get_gender
 weight_class = get_weight_class
-name = get_name
-nickname = get_nickname
+# name = get_name
+# nickname = get_nickname
+#
+# sort_fighters_by_weight_class(weight_class)
+# rank_fighters(fighters_sorted_by_weight_class)
 
 
 puts "HELLO WORLD"

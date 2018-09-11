@@ -19,7 +19,7 @@ def get_name
   gets.chomp.downcase
 end
 
-def get_nickname 
-  puts "What is your fighter's name?"
+def get_nickname
+  puts "Right on [HELPER METHOD] , what is your fighter nickname? "
   gets.chomp.downcase
 end
