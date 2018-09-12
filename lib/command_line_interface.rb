@@ -33,6 +33,7 @@ def help
   puts "Here is what you can do:"
   puts "- help: displays this help message"
   puts "- explore: displays the different areas you can explore"
+  puts "- current location: displays where you are currently"
   puts "- build shelter: allows you to build a shelter"
   puts "- eat: allows you to eat food and increases your hunger stat"
   puts "- drink: allows you to drink water and increases your thirst stat"
@@ -69,9 +70,10 @@ def quit_game
   puts "Thanks for playing!"
 end
 
-def run
+def run(forest, desert, lake, cave)
   help
 
+  command = ""
   while command
     puts "What would you like to do?"
     command = gets.chomp
@@ -91,6 +93,18 @@ def run
         elsif explore_command == "Cave"
           current_location = cave
           puts "You are now in the cave."
+        end
+      when "current location"
+        if current_location == starter_area
+          puts "You are currently in the starter area."
+        elsif current_location == forest
+          puts "You are currently in the forest."
+        elsif current_location == desert
+          puts "You are currently in the desert."
+        elsif current_location == lake
+          puts "You are currently by the lake."
+        elsif current_location == cave
+          puts "You are currently in the cave."
         end
       when "build shelter"
         puts "building shelter..."
