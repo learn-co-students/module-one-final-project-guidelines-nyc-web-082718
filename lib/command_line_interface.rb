@@ -14,16 +14,32 @@ def get_gender
 end
 
 def get_weight_class(gender)
-  puts "\n""What is your fighter's weight class?"
-  if gender == "m"
-    puts "(Strawweight, Flyweight, Bantamweight, Lightweight, Super_lightweight, Welterweight, Middleweight, Light_heavyweight or Heavyweight)"
-    gets.chomp.downcase
-  elsif gender == "f"
-    puts "(Strawweight, Flyweight, Bantamweight or Featherweight)"
-    gets.chomp.downcase
-  else
-    puts "Please choose a gender with the format M/F"
-  end
+ m_hash = {1=> "Strawweight", 2=> "Bantamweight", 3=> "Lightweight", 4=> "Welterweight", 5=> "Middleweight", 6=> "Light_heavyweight", 7=> "Heavyweight"}
+
+ f_hash = {1=> "Women_Strawweight", 2=> "Women_Flyweight", 3=> "Women_Bantamweight", 4=> "Women_Featherweight"}
+
+ puts "\n""What is your fighter's weight class?"
+ if gender == "m"
+   puts "Choose a number between 1-7"
+   puts "1. Strawweight"
+   puts "2. Bantamweight"
+   puts "3. Lightweight"
+   puts '4. Welterweight'
+   puts "5. Middleweight"
+   puts "6. Light Heavyweight"
+   puts "7. Heavyweight"
+   weight_class= m_hash[gets.chomp.to_i]
+ elsif gender == "f"
+   puts "1. Strawweight"
+   puts "2. Flyweight"
+   puts "3. Bantamweight"
+   puts "4. Featherweight"
+   weight_class = f_hash[gets.chomp.to_i]
+ else
+   puts "Please choose a gender with the format M/F"
+ end
+ puts "That weight class is one of the toughest! Good luck!"
+ weight_class
 end
 
 def get_name
