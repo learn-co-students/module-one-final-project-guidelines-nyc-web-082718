@@ -1,0 +1,42 @@
+
+Input "kill the rich"
+
+
+    PSEUDOCODE
+
+    get_text (gets.chomp)
+    split into individual words (words_array)
+    words_array.each do |word|
+        PART 1(word)
+        PART 2(word)
+
+
+
+PART 1. call ?sl; the first word object will be bad - get info on "bad" and add it to :shortwords
+    query(?sl, word)[0] to get word object with attributes
+    Is word long or short?
+    Create either LongWord or ShortWord with following attributes:
+        - word
+        - length(part of word itself)
+        - part of speech
+        - # syllables
+        - definition
+
+PART 2. Call a) syn b) ant c) rhy and get 3 arrays of related words
+    query_types.each do |type|
+        query(type, word) to get an ARRAY of related word objects with attributes
+        Is word long or short?
+
+    For each new word, use the info to add to either :shortwords or :longwords
+        Create either LongWord or ShortWord with following attributes:
+            - word
+            - length(part of word itself)
+            - part of speech
+            - # syllables
+            - definition
+
+    If ORIGINAL WORD ("bad") is short and new word is long, also create a WordLink joining the two.
+        Is original word length opposite of new word length?
+        If so, create WordLink with attributes:
+            - ShortWord
+            - LongWord

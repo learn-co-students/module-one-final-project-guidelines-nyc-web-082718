@@ -1,0 +1,111 @@
+Input "bad"
+    PSEUDOCODE
+
+    get_string (gets.chomp)
+        => "bad man"
+    split_into_words_array(string)
+        => ["bad", "man"]
+    words_array.each do |word_string|
+        PART 1(word) # get word itself:
+
+method: make_word_instance_from_string
+            get_info_hash(word_string)                    ####### factor
+                => info_hash
+            create_word_instance(info_hash)
+                if short, do:
+                    => original_word = ShortWord.new(info_hash)
+                    => original_word_class = "short"
+                if long, do:
+                    => original_word = LongWord.new(info_hash)
+                    => original_word_class = "long"            ######### factor
+
+
+
+        PART 2(word) # get synonyms, rhymes, antonyms
+            original_word_class = original_word.class
+
+            query_types = ["syn", "ant", "rhy"]
+            related_words_hash = {}
+
+            query_types.each do |type|
+                word_objects_array = query(type, word_string)
+                related_words_hash[type] = word_objects_array
+            end
+                => related_words_hash =
+                    {syn: [{}{}{}...],
+                    ant: [{word}{word}...],
+                    rhy: [{word}{word}...]}
+            related_words_hash.each do |type, word_objects_array|
+                word_objects_array.each do |word_object|
+method: make_word_instance_from_string
+                get_info_hash(word_string)                    ####### factor
+                    => info_hash
+                create_word_instance(info_hash)
+                    if short, do:
+                        => new_word = ShortWord.new(info_hash)
+                        => new_word_class = "short"
+                    if long, do:
+                        => new_word = LongWord.new(info_hash)
+                        => new_word_class = "long"            ######### factor
+
+                    # for words that are Longwords, do WordLink.new(shortword/longword)
+                    if original_word.class != new_word.class
+                        WordLink.new(original_word_class: original_word, new_word_class: new_word)
+                    end
+                end
+
+            end
+
+
+PART 1. call ?sl; the first word object will be bad - get info on "bad" and add it to :shortwords
+    query(?sl, word)[0] to get word object with attributes
+      # write method to get attributes from word object - it should return a hash that looks like:
+      METHOD NAME:
+
+      ARGUMENT:
+      word string
+      DESIRED OUTPUT:
+      info_hash = {
+        word: "bad",
+        length: 3,
+        part_of_speech: "adj",
+        num_syllables: 1,
+        definitions: [
+                      "very intense",
+                      "not financially safe or secure",
+                      "nonstandard"...
+                      ]
+      }
+
+#################
+# TO DO:
+# make methods to split up words with multiple parts of speech into multiple ShortWord or LongWord objects
+#################
+
+    Is word long or short?
+    Create either LongWord or ShortWord with following attributes:
+    ShortWord.new(info_hash)
+        - word
+        - length(part of word itself)
+        - part of speech
+        - # of syllables
+        - definition
+
+PART 2. Call a) syn b) ant c) rhy and get 3 arrays of related words
+    query_types.each do |type|
+        query(type, word) to get an ARRAY of related word objects with attributes
+        Is word long or short?
+
+    For each new word, use the info to add to either :shortwords or :longwords
+        Create either LongWord or ShortWord with following attributes:
+            - word
+            - length(part of word itself)
+            - part of speech
+            - # of syllables
+            - definition
+
+    If ORIGINAL WORD ("bad") is short and new word is long, also create a WordLink joining the two.
+        Is original word length opposite of new word length?
+        If so, create WordLink with attributes:
+            - ShortWord
+            - LongWord

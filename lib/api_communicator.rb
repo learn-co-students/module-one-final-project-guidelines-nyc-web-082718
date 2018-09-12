@@ -13,17 +13,13 @@ def make_word_object_from_api(word)
   query_types = ["syn", "ant", "rhy"]
 
 #loop through query types, populate all of word's attributes
+  query_types.each do |type|
+    # get api for syn or ant or rhy
+    query(query_type, word)
+    # populate database
+  end
+
 end
-
-
-
-
-
-
-
-
-
-
 
 def welcome
  # welcomes and gives first instruction
@@ -35,26 +31,28 @@ def get_text
  gets.chomp
 end
 
+def save_all_words_in_word_array_to_db(words_array)
+  words_array.each do |word_object|
+     if word_object_short?(word_object)
+       #########################
+       # TO DO: figure out how to get each of the following
+       word = word_object["word"]
+       length = word.length
+       # syllables =
+       ##########################
+       ShortWord.new(word: word, length: length) #, syllables: syllables)
+     else
+       LongWord.new(word: word, length: length)# , syllables: syllables)
+     end
+   end
+end
+
 def query(query_type, input)
-
-
  url = "https://api.datamuse.com/words?rel_#{query_type}=#{input}&md=spd"
  words_array = get_words_from_api(url)
 
  #save to DB depending on length
- words_array.each do |word_object|
-    if word_object_short?(word_object)
-      #########################
-      # TO DO: figure out how to get each of the following
-      word = word_object["word"]
-      length = word.length
-      # syllables =
-      ##########################
-      ShortWord.new(word: word, length: length) #, syllables: syllables)
-    else
-      LongWord.new(word: word, length: length)# , syllables: syllables)
-    end
-  end
+ save_all_words_in_word_array_to_db(words_array)
 
  words_array
 end
