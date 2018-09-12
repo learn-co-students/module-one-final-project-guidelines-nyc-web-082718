@@ -1,0 +1,23 @@
+A: Word shortener/lengthener
+
+As a user, I want to be able to enter one long word (10+ characters) and receive a shorter synonym
+As a user, I want to be able to enter one short word and receive a longer synonym
+
+As a user, if I enter a paragraph, I should be given a choice about:
+    1) whether to shorten or lengthen words
+    2) whether words will be replaced
+        a) randomly
+            If I choose random: I should receive my original paragraph, with random longer or shorter synonyms replacing all short/long words
+        b) at my discretion
+            If I decide to choose each word individually, I should receive a list of synonyms and have the option to enter my chosen synonym into my paragraph, or to leave the original word.
+    3) if lengthening, whether or not to ignore function words (only changing content words)
+
+B: Essay info/mixer
+
+As a user, I want to be able to enter a text and:
+    - get information on the most commonly used content words
+    - get a text in which every content word is replaced with its definition
+    - get a text in which every content word is replaced with a word in the same category
+    - get a text in which every content word is replaced with a word in the same part of speech (aka mad libs)
+    - get a text in which every word is replaced with a homophone, if one exists
+    - get a text in which every word rhymes in 1-to-1 correspondence with my words
