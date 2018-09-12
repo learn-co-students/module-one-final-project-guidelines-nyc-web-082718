@@ -9,11 +9,11 @@ class Character < ActiveRecord::Base
     self.create(name: name, health: 10, thirst: 8, hunger: 8, sleep: 8)
   end
 
-  def collect_wood
+  def collect_wood(current_location)
     if current_location == forest
       puts "Collecting wood..."
       object = self.inventories.where(name: "wood")
-      object.increment!(:amount, 5)
+      object[0].increment!(:amount, 5)
     else
       puts "You must be in the forest to collect wood!"
     end

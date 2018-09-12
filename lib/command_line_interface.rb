@@ -25,10 +25,6 @@ def first_action
   user_input = gets.chomp
 end
 
-def help_reminder
-  puts "If you don't know what to do, type 'help' to see all possible commands."
-end
-
 def help
   puts "Here is what you can do:"
   puts "- help: displays this help message"
@@ -39,38 +35,22 @@ def help
   puts "- drink: allows you to drink water and increases your thirst stat"
   puts "- sleep: allows you to sleep and increases your sleep stat"
   puts "- collect: allows you to collect a resource and adds it to your inventory"
-  puts "- quit : quits this program"
+  puts "- quit: quits this program"
 end
 
 def where_to_explore
  puts "Where would you like to go? You can choose between: Forest, Desert, Lake, Cave"
 end
 
-def go_to_forest(current_location, forest)
-  current_location = forest
-end
-
-def go_to_desert(current_location, desert)
-  current_location = desert
-end
-
-def go_to_lake(current_location, lake)
-  current_location = lake
-end
-
-def go_to_cave(current_location, cave)
-  current_location = cave
-end
-
-def i_want_wood
-  character.collect_wood
+def i_want_wood(current_location)
+  Character.first.collect_wood(current_location)
 end
 
 def quit_game
   puts "Thanks for playing!"
 end
 
-def run(forest, desert, lake, cave)
+def run(starter_area, forest, desert, lake, cave)
   help
 
   command = ""
