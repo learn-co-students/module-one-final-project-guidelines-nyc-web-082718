@@ -30,24 +30,24 @@ def help
   puts "- collect: allows you to collect a resource and adds it to your inventory"
 end
 
-def go_to_forest(character)
-  character.current_location.update(name: "Forest", water: true, resource: "wood")
+def go_to_forest
+  Environment.first.update(name: "Forest", water: true, resource: "wood")
 end
 
-def go_to_desert(character)
-  character.current_location.update(name: "Desert", water: false, resource: "sand")
+def go_to_desert
+  Environment.first.update(name: "Desert", water: false, resource: "sand")
 end
 
-def go_to_lake(character)
-  character.current_location.update(name: "Lake", water: true, resource: "water")
+def go_to_lake
+  Environment.first.update(name: "Lake", water: true, resource: "water")
 end
 
-def go_to_cave(character)
-  character.current_location.update(name: "Cave", water: false, resource: "stone")
+def go_to_cave
+  Environment.first.update(name: "Cave", water: false, resource: "stone")
 end
 
-def i_want_wood(character)
-  character.collect_wood
+def i_want_wood
+  Character.first.collect_wood
 end
 
-# binding.pry
+binding.pry

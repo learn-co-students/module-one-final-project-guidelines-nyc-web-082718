@@ -10,9 +10,10 @@ class Character < ActiveRecord::Base
   end
 
   def collect_wood
-    if self.current_location.name == "Forest"
+    if Environment.first.name == "Forest"
       puts "Collecting wood..."
-      self.inventories.where(name: "wood").update("count += 5")
+      object = self.inventories.where(name: "wood")
+      object.increment!(:amount, 5)
     else
       puts "You must be in the forest to collect wood!"
     end
