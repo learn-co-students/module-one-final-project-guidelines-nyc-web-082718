@@ -96,7 +96,7 @@ class Character < ActiveRecord::Base
         puts "Building stone shelter in the #{current_location[0].name}."
         Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "stone")
         stone_count = stone[0].decrement!(:amount, 15)
-        puts "You now have #{wood[0].amount} stone."
+        puts "You now have #{stone[0].amount} stone."
       else
         puts "You need 15 stones to build your shelter! You can find more stones in the cave."
       end
