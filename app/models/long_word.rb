@@ -1,0 +1,1 @@
+class LongWord < ActiveRecord::Base
