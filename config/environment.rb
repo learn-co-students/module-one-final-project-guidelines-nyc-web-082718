@@ -8,4 +8,4 @@ require_all 'lib'
 
 # RestClient.get('api.datamuse.com/words')
 
-binding.pry
+# binding.pry

@@ -6,8 +6,24 @@ def get_words_from_api(url)
  #make the web request
  response_string = RestClient.get(url)
  response_hash = JSON.parse(response_string)
-
 end
+
+def make_word_object_from_api(word)
+
+  query_types = ["syn", "ant", "rhy"]
+
+#loop through query types, populate all of word's attributes
+end
+
+
+
+
+
+
+
+
+
+
 
 def welcome
  # welcomes and gives first instruction
@@ -20,33 +36,53 @@ def get_text
 end
 
 def query(query_type, input)
- # interpolate type and word into url
- # call #get_words_from_api and inputs created url
- # returns an array of words
- url = "https://api.datamuse.com/words?rel_#{query_type}=#{input}"
- get_words_from_api(url)
+
+
+ url = "https://api.datamuse.com/words?rel_#{query_type}=#{input}&md=spd"
+ words_array = get_words_from_api(url)
+
+ #save to DB depending on length
+ words_array.each do |word_object|
+    if word_object_short?(word_object)
+      #########################
+      # TO DO: figure out how to get each of the following
+      word = word_object["word"]
+      length = word.length
+      # syllables =
+      ##########################
+      ShortWord.new(word: word, length: length) #, syllables: syllables)
+    else
+      LongWord.new(word: word, length: length)# , syllables: syllables)
+    end
+  end
+
+ words_array
 end
 
-def get_synonyms(input)
- # talk to api and run appropriate queries
- # return array of possible syns
- query("syn", input)
-end
+  def get_synonyms(input)
+   # talk to api and run appropriate queries
+   # return array of possible syns
+   query("syn", input)
+  end
 
-def get_antonyms(input)
- # talk to api and run appropriate queries
- # return array of possible ants
- query("ant", input)
-end
+  def get_antonyms(input)
+   # talk to api and run appropriate queries
+   # return array of possible ants
+   query("ant", input)
+  end
 
-def get_rhymes(input)
- # talk to api and run appropriate queries
- # return array of possible rhymes
- query("rhy", input)
-end
+  def get_rhymes(input)
+   # talk to api and run appropriate queries
+   # return array of possible rhymes
+   query("rhy", input)
+  end
 
-def filter_short_words(arr)
- arr.select { |word| word.length < 6 }
+# def filter_short_words(arr)
+#  arr.select { |word| word.length < 6 }
+# end
+
+def word_object_short?(word_object)
+  word_object["word"].length < 6
 end
 
 def turn_text_to_synonyms
@@ -68,7 +104,7 @@ def turn_text_to_synonyms
  end
  puts output_array.join(" ")
  puts "The following words could not be shortened: #{words_with_no_synonyms}"
- binding.pry
+ # binding.pry
 end
 
 def turn_text_to_rhymes
@@ -96,7 +132,7 @@ def turn_text_to_rhymes
  binding.pry
 end
 
-turn_text_to_rhymes
+# turn_text_to_rhymes
 
 
 # binding.pry
