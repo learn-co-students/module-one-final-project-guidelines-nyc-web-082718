@@ -32,27 +32,32 @@ end
 def help
   puts "Here is what you can do:"
   puts "- help: displays this help message"
-  puts "- build shelter: allows you to build a shelter"
   puts "- explore: displays the different areas you can explore"
+  puts "- build shelter: allows you to build a shelter"
   puts "- eat: allows you to eat food and increases your hunger stat"
   puts "- drink: allows you to drink water and increases your thirst stat"
   puts "- sleep: allows you to sleep and increases your sleep stat"
   puts "- collect: allows you to collect a resource and adds it to your inventory"
+  puts "- quit : quits this program"
 end
 
-def go_to_forest(forest)
+def where_to_explore
+ puts "Where would you like to go? You can choose between: Forest, Desert, Lake, Cave"
+end
+
+def go_to_forest(current_location, forest)
   current_location = forest
 end
 
-def go_to_desert(desert)
+def go_to_desert(current_location, desert)
   current_location = desert
 end
 
-def go_to_lake(lake)
+def go_to_lake(current_location, lake)
   current_location = lake
 end
 
-def go_to_cave(cave)
+def go_to_cave(current_location, cave)
   current_location = cave
 end
 
@@ -60,4 +65,50 @@ def i_want_wood
   character.collect_wood
 end
 
-# binding.pry
+def quit_game
+  puts "Thanks for playing!"
+end
+
+def run
+  help
+
+  while command
+    puts "What would you like to do?"
+    command = gets.chomp
+    case command
+      when "explore"
+      where_to_explore
+      explore_command = gets.chomp
+        if explore_command == "Forest"
+          current_location = forest
+          puts "You are now in the forest."
+        elsif explore_command == "Desert"
+          current_location = desert
+          puts "You are now in the desert."
+        elsif explore_command == "Lake"
+          current_location = lake
+          puts "You are now by the lake."
+        elsif explore_command == "Cave"
+          current_location = cave
+          puts "You are now in the cave."
+        end
+      when "build shelter"
+        puts "building shelter..."
+      when "eat"
+        puts "eating..."
+      when "drink"
+        puts "drinking water..."
+      when "sleep"
+        puts "sleeping..."
+      when "collect"
+        puts "collecting resources..."
+      when "quit"
+        quit_game
+        break
+      else
+        help
+      end
+    end
+end
+
+#binding.pry

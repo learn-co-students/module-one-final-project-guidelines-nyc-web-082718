@@ -23,6 +23,7 @@ end
 
 desc 'starts a console'
 task :console do
-  ActiveRecord::Base.logger = Logger.new(STDOUT)
+  ARGV.clear
+  #ActiveRecord::Base.logger = Logger.new(STDOUT)
   Pry.start
 end
