@@ -64,7 +64,7 @@ def i_want_water(current_location, forest, lake)
 end
 
 def i_want_stone(current_location, cave)
-  Character.first.collect_water(current_location, forest, lake)
+  Character.first.collect_stone(current_location, cave)
 end
 
 def where_am_i(current_location)
