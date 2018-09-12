@@ -5,10 +5,10 @@ require_all 'app'
 def introduce_user
   puts "Welcome to our world! What is your character's name?"
   name = gets.chomp
-  Character.new_character(name)
-  start_inventory
+  character = Character.new_character(name)
+  Environment.create_environment(character.id)
+  Inventory.start_inventory(character.id)
   puts "Hello #{name}! What would you like to do?"
-  help_reminder
 end
 
 def first_action
@@ -30,25 +30,24 @@ def help
   puts "- collect: allows you to collect a resource and adds it to your inventory"
 end
 
-def go_to_forest
-  current_location.update(name: "Forest", water: true, resource: "wood")
+def go_to_forest(character)
+  character.current_location.update(name: "Forest", water: true, resource: "wood")
 end
 
-def go_to_desert
-  current_location.update(name: "Desert", water: false, resource: "sand")
+def go_to_desert(character)
+  character.current_location.update(name: "Desert", water: false, resource: "sand")
 end
 
-def go_to_lake
-  current_location.update(name: "Lake", water: true, resource: "water")
+def go_to_lake(character)
+  character.current_location.update(name: "Lake", water: true, resource: "water")
 end
 
-def go_to_cave
-  current_location.update(name: "Cave", water: false, resource: "stone")
+def go_to_cave(character)
+  character.current_location.update(name: "Cave", water: false, resource: "stone")
 end
 
-def start_inventory
-  wood = Inventory.create(name: "wood", count: 0)
-  stone = Inventory.create(name: "stone", count: 0)
-  sand = Inventory.create(name: "sand", count: 0)
-  water = Inventory.create(name: "water", count: 0)
+def i_want_wood(character)
+  character.collect_wood
 end
+
+# binding.pry
