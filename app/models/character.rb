@@ -6,7 +6,19 @@ class Character < ActiveRecord::Base
   has_many :environments, through: :shelters
 
   def self.new_character(name)
-    self.create(name: name, health: 10, thirst: 8, hunger: 8, sleep: 8)
+    self.create(name: name, thirst: 8, hunger: 8, sleep: 8)
+  end
+
+  def create_health
+    self.thirst + self.hunger + self.sleep
+  end
+
+  def my_stats
+    puts "Current Character Stats:"
+    puts "Health: #{self.create_health}"
+    puts "Thirst: #{self.thirst}"
+    puts "Hunger: #{self.hunger}"
+    puts "Sleep: #{self.sleep}"
   end
 
   def collect_wood(current_location, forest)
@@ -69,7 +81,7 @@ class Character < ActiveRecord::Base
     object = self.inventories.where(name: "water")
     object_count = object[0].amount
     if object_count > 0
-      object_count = object[0].amount.decrement!(:amount, 1)
+      object[0].decrement!(:amount, 1)
       puts "drinking water..."
       if self.thirst < 10
         self.increment!(:thirst, 1)
@@ -78,7 +90,7 @@ class Character < ActiveRecord::Base
         self.thirst = 10
         "Your thirst stat is already maxed out."
       end
-      puts "You now have #{object_count} water."
+      puts "You now have #{object[0].amount} water."
     else
       puts "You must collect more water in order to drink!"
     end
@@ -91,7 +103,7 @@ class Character < ActiveRecord::Base
       if wood_count >= 10
         puts "Building wood shelter in the #{current_location[0].name}..."
         Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "wood")
-        wood_count = wood[0].decrement!(:amount, 10)
+        wood[0].decrement!(:amount, 10)
         puts "You now have #{wood[0].amount} wood."
       else
         puts "You need 10 wood to build your shelter! You can find more wood in the forest."
@@ -102,7 +114,7 @@ class Character < ActiveRecord::Base
       if stone_count >= 15
         puts "Building stone shelter in the #{current_location[0].name}..."
         Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "stone")
-        stone_count = stone[0].decrement!(:amount, 15)
+        stone[0].decrement!(:amount, 15)
         puts "You now have #{stone[0].amount} stone."
       else
         puts "You need 15 stones to build your shelter! You can find more stones in the cave."
@@ -125,16 +137,17 @@ class Character < ActiveRecord::Base
   end
 
   def go_to_sleep(current_location)
-    if current_location[0].shelters.empty?
-      puts "You must build a shelter in this location before you can rest."
-    else
-      puts "sleeping..."
+    if current_location[0].shelters.empty? == false
       if self.sleep < 10
         self.increment!(:sleep, 1)
         "Your sleep stat is now at #{self.sleep}."
       else
         self.sleep = 10
         "Your sleep stat is already maxed out."
+      end
+      puts "sleeping..."
+    else
+      puts "You must build a shelter in this location before you can rest."
     end
   end
 

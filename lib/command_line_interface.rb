@@ -6,11 +6,14 @@ def introduce_user
   puts "Welcome to our world! What is your character's name?"
   name = gets.chomp
   character = Character.new_character(name)
+  character.update(health: character.create_health)
   Environment.create_environments(character.id)
   Inventory.start_inventory(character.id)
   puts "Hello #{name}! What would you like to do?"
 end
 
+
+# Character.first.health = Character.first.thirst + Character.first.hunger + Character.first.sleep
 character = Character.first
 
 starter_area = Environment.all.where(id: 1)
@@ -28,6 +31,7 @@ end
 def help
   puts "Here is what you can do:"
   puts "- help: displays this help message"
+  puts "- my stats: allows you to view your current character stats"
   puts "- explore: displays the different areas you can explore"
   puts "- current location: displays where you are currently"
   puts "- build shelter: allows you to build a shelter"
@@ -88,6 +92,7 @@ def quit_game
 end
 
 def run(current_location, starter_area, forest, desert, lake, cave)
+  # Character.first.health = Character.first.thirst + Character.first.hunger + Character.first.sleep
   help
 
   command = ""
@@ -95,6 +100,8 @@ def run(current_location, starter_area, forest, desert, lake, cave)
     puts "What would you like to do?"
     command = gets.chomp
     case command
+      when "my stats"
+        Character.first.my_stats
       when "current location"
         where_am_i(current_location, starter_area, forest, desert, lake, cave)
       when "explore"
