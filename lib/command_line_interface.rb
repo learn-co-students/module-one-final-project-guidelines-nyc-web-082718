@@ -6,10 +6,20 @@ def introduce_user
   puts "Welcome to our world! What is your character's name?"
   name = gets.chomp
   character = Character.new_character(name)
-  Environment.create_environment(character.id)
+  Environment.create_environments(character.id)
   Inventory.start_inventory(character.id)
   puts "Hello #{name}! What would you like to do?"
 end
+
+character = Character.first
+
+starter_area = Environment.all.where(id: 1)
+forest = Environment.all.where(id: 2)
+desert = Environment.all.where(id: 3)
+lake = Environment.all.where(id: 4)
+cave = Environment.all.where(id: 5)
+
+current_location = starter_area
 
 def first_action
   user_input = gets.chomp
@@ -30,24 +40,24 @@ def help
   puts "- collect: allows you to collect a resource and adds it to your inventory"
 end
 
-def go_to_forest
-  Environment.first.update(name: "Forest", water: true, resource: "wood")
+def go_to_forest(forest)
+  current_location = forest
 end
 
-def go_to_desert
-  Environment.first.update(name: "Desert", water: false, resource: "sand")
+def go_to_desert(desert)
+  current_location = desert
 end
 
-def go_to_lake
-  Environment.first.update(name: "Lake", water: true, resource: "water")
+def go_to_lake(lake)
+  current_location = lake
 end
 
-def go_to_cave
-  Environment.first.update(name: "Cave", water: false, resource: "stone")
+def go_to_cave(cave)
+  current_location = cave
 end
 
 def i_want_wood
-  Character.first.collect_wood
+  character.collect_wood
 end
 
-binding.pry
+# binding.pry
