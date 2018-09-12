@@ -71,6 +71,13 @@ class Character < ActiveRecord::Base
     if object_count > 0
       object_count = object[0].amount.decrement!(:amount, 1)
       puts "drinking water..."
+      if self.thirst < 10
+        self.increment!(:thirst, 1)
+        "Your thirst stat is now at #{self.thirst}."
+      else
+        self.thirst = 10
+        "Your thirst stat is already maxed out."
+      end
       puts "You now have #{object_count} water."
     else
       puts "You must collect more water in order to drink!"
@@ -82,7 +89,7 @@ class Character < ActiveRecord::Base
       wood = self.inventories.where(name: "wood")
       wood_count = wood[0].amount
       if wood_count >= 10
-        puts "Building wood shelter in the #{current_location[0].name}."
+        puts "Building wood shelter in the #{current_location[0].name}..."
         Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "wood")
         wood_count = wood[0].decrement!(:amount, 10)
         puts "You now have #{wood[0].amount} wood."
@@ -93,7 +100,7 @@ class Character < ActiveRecord::Base
       stone = self.inventories.where(name: "stone")
       stone_count = stone[0].amount
       if stone_count >= 15
-        puts "Building stone shelter in the #{current_location[0].name}."
+        puts "Building stone shelter in the #{current_location[0].name}..."
         Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "stone")
         stone_count = stone[0].decrement!(:amount, 15)
         puts "You now have #{stone[0].amount} stone."
@@ -102,5 +109,34 @@ class Character < ActiveRecord::Base
       end
     end
   end
+
+  def view_my_shelters
+   starter_count = self.shelters.where(environment_id: 1).count
+   forest_count = self.shelters.where(environment_id: 2).count
+   desert_count = self.shelters.where(environment_id: 3).count
+   lake_count = self.shelters.where(environment_id: 4).count
+   cave_count = self.shelters.where(environment_id: 5).count
+   puts "You have:"
+   puts "#{starter_count} shelter(s) in the Starter Area"
+   puts "#{forest_count} shelter(s) in the Forest"
+   puts "#{desert_count} shelter(s) in the Desert"
+   puts "#{lake_count} shelter(s) by the Lake"
+   puts "#{cave_count} shelter(s) in the Cave"
+  end
+
+  def go_to_sleep(current_location)
+    if current_location[0].shelters.empty?
+      puts "You must build a shelter in this location before you can rest."
+    else
+      puts "sleeping..."
+      if self.sleep < 10
+        self.increment!(:sleep, 1)
+        "Your sleep stat is now at #{self.sleep}."
+      else
+        self.sleep = 10
+        "Your sleep stat is already maxed out."
+    end
+  end
+
 
 end

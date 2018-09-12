@@ -31,6 +31,7 @@ def help
   puts "- explore: displays the different areas you can explore"
   puts "- current location: displays where you are currently"
   puts "- build shelter: allows you to build a shelter"
+  puts "- my shelters: allows you to view all of your shelters"
   puts "- eat: allows you to eat food and increases your hunger stat"
   puts "- drink: allows you to drink water and increases your thirst stat"
   puts "- sleep: allows you to sleep and increases your sleep stat"
@@ -116,6 +117,8 @@ def run(current_location, starter_area, forest, desert, lake, cave)
         shelter_materials
         shelter_command = gets.chomp
         Character.first.build_shelter(shelter_command, current_location)
+      when "my shelters"
+        Character.first.view_my_shelters
       when "eat"
         puts "eating..."
       when "drink"
