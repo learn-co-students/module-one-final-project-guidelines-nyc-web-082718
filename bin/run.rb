@@ -17,3 +17,5 @@ complete_player_creation(formatted_name, formatted_nickname, gender, weight_clas
 #
 # binding.pry
 # puts "HELLO WORLD"
+
+# brooke is testing if dope shit works
