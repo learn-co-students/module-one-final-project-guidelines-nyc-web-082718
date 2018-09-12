@@ -5,4 +5,5 @@ require_relative "../lib/api_communicator.rb"
 require_relative "../lib/command_line_interface.rb"
 
 welcome
-get_text
+input = get_text
+split_into_words_array(input)

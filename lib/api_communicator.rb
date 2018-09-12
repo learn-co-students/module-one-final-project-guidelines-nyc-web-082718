@@ -2,25 +2,30 @@ require 'rest-client'
 require 'json'
 require 'pry'
 
+
+
 def get_words_from_api(url)
  #make the web request
  response_string = RestClient.get(url)
  response_hash = JSON.parse(response_string)
 end
 
+# def split_into_words_array(text_string)
+#   input = text_string.downcase
+#   input_array = input.split(" ")
+#
+#   puts input_array
+# end
+
 def make_word_object_from_api(word)
-
   query_types = ["syn", "ant", "rhy"]
-
-#loop through query types, populate all of word's attributes
+  #loop through query types, populate all of word's attributes
   query_types.each do |type|
     # get api for syn or ant or rhy
     query(query_type, word)
     # populate database
   end
-
 end
-
 
 
 def save_all_words_in_word_array_to_db(words_array)

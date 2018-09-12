@@ -1,11 +1,11 @@
-def get_string
-  gets.chomp
-  # => "bad man"
-end
+# def get_text
+#   gets.chomp
+#   # => "bad man"
+# end
 
-def split_into_words_array(text_string)
-  # => ["bad", "man"]
-end
+# def split_into_words_array(get_text)
+#   # => ["bad", "man"]
+# end
 
 def add_words_from_array_to_db(words_array)
   words_array.each do |word_string|
