@@ -1,0 +1,25 @@
+- short to long, long to short
+- user choice of word OR random words
+- https://www.wordsapi.com/#try
+
+
+Long: >= 8 characters
+Short: < 8 characters
+
+As a user, I want to be able to:
+    enter one long word and receive a shorter synonym
+    enter one short word and receive a longer synonym
+
+
+    enter one paragraph and be given a choice for whether words will be replaced randomly or at my discretion
+        random: inserts a random longer or shorter synonym for every word < or >= 8 characters
+        my choice: for each word to be replaced, CLI gives a list of synonyms and gives me the option to choose from it, or to leave the original word
+
+
+
+
+- similar topic
+- sentiment
+- negation
+- homophones/misspelling
+- rhyming words
