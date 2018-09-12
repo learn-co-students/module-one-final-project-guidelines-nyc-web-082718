@@ -71,7 +71,7 @@ class Character < ActiveRecord::Base
     if object_count > 0
       object_count = object[0].amount.decrement!(:amount, 1)
       puts "drinking water..."
-      puts "You now have #{object_count} water"
+      puts "You now have #{object_count} water."
     else
       puts "You must collect more water in order to drink!"
     end
@@ -82,7 +82,23 @@ class Character < ActiveRecord::Base
       wood_object = self.inventories.where(name: "wood")
       wood_count = wood_object[0].amount
       if wood_count >= 10
-        puts "Building wood shelter in "
+        puts "Building wood shelter in the #{current_location[0].name}."
+        Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "wood")
+        wood_count = wood_object[0].amount.decrement!(:amount, 10)
+        puts "You now have #{wood_count} wood."
+      else
+        puts "You need 10 wood to build your shelter! You can find more wood in the forest."
+      end
+    elsif shelter_command == "stone"
+      stone_object = self.inventories.where(name: "stone")
+      stone_count = stone_object[0].amount
+      if stone_count >= 15
+        puts "Building stone shelter in the #{current_location[0].name}."
+        Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "stone")
+        stone_count = stone_object[0].amount.decrement!(:amount, 15)
+        puts "You now have #{stone_count} stone."
+      else
+        puts "You need 15 stones to build your shelter! You can find more stones in the cave."
       end
     end
   end

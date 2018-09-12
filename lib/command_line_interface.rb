@@ -47,6 +47,10 @@ def what_to_collect
   puts "Which resource would you like to collect? You can choose between: wood, sand, water, stone"
 end
 
+def shelter_materials
+  puts "What would you like to make your shelter out of? You can choose between: wood, stone"
+end
+
 def i_want_wood(current_location, forest)
   Character.first.collect_wood(current_location, forest)
 end
@@ -109,7 +113,9 @@ def run(current_location, starter_area, forest, desert, lake, cave)
             puts "You are now in the cave."
           end
       when "build shelter"
-        puts "building shelter..."
+        shelter_materials
+        shelter_command = gets.chomp
+        Character.first.build_shelter(shelter_command, current_location)
       when "eat"
         puts "eating..."
       when "drink"
@@ -139,4 +145,4 @@ def run(current_location, starter_area, forest, desert, lake, cave)
     end
 end
 
-#binding.pry
+binding.pry
