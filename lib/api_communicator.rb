@@ -21,15 +21,7 @@ def make_word_object_from_api(word)
 
 end
 
-def welcome
- # welcomes and gives first instruction
- puts "Welcome! Type a word you want to shorten."
-end
 
-def get_text
- # chomp the inputted word
- gets.chomp
-end
 
 def save_all_words_in_word_array_to_db(words_array)
   words_array.each do |word_object|
