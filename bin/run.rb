@@ -16,11 +16,17 @@ end
 welcome
 gender = get_gender.downcase
 weight_class = get_weight_class(gender)
-name = get_name
-formatted_name = format_name(name)
+Fighter.possible_opponents
+player_name = get_name
+formatted_name = format_name(player_name)
 nickname = get_nickname(formatted_name)
 formatted_nickname = format_nickname(nickname)
 complete_player_creation(formatted_name, formatted_nickname, gender, weight_class)
+fighter = Fighter.fighter_select
+id = fighter.id
+fighter_name = fighter.name
+match_1 = Fight.create(user_id: Player.last.id, fighter_id: id)
+first_match_announcement(fighter_name)
 
 # puts Player.all.last.name
 
@@ -30,3 +36,5 @@ complete_player_creation(formatted_name, formatted_nickname, gender, weight_clas
 #
 # binding.pry
 # puts "HELLO WORLD"
+
+# Fighter.all.where(id: num)

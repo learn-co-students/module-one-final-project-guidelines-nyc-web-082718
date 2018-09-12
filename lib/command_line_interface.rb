@@ -82,4 +82,11 @@ def complete_player_creation(formatted_name, formatted_nickname, gender, weight_
   puts "\n""It's time!!! #{full_name} enters the UFC as a promising rookie #{formatted_weight_class}!"
 end
 
+def first_match_announcement(fighter_name)
+  puts "You've been matched against #{fighter_name}"
+  puts "Ladies and Gentlemen!"
+  puts "#{Player.last.name} vs. #{fighter_name}!"
+end
+
+
 # binding.pry
