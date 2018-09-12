@@ -77,4 +77,14 @@ class Character < ActiveRecord::Base
     end
   end
 
+  def build_shelter(shelter_command, current_location)
+    if shelter_command == "wood"
+      wood_object = self.inventories.where(name: "wood")
+      wood_count = wood_object[0].amount
+      if wood_count >= 10
+        puts "Building wood shelter in "
+      end
+    end
+  end
+
 end

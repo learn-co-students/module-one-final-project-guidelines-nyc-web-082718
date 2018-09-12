@@ -139,4 +139,4 @@ def run(current_location, starter_area, forest, desert, lake, cave)
     end
 end
 
-binding.pry
+#binding.pry
