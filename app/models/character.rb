@@ -224,8 +224,8 @@ class Character < ActiveRecord::Base
         self.decrement!(:hunger, 2)
         puts "Warning! Your hunger stat is down to 2! You must eat something!" if self.hunger == 2
       end
-      if self.sleep > 0
-        self.decrement!(:sleep, 1)
+      if self.sleep > 1
+        self.decrement!(:sleep, 2)
         puts "Warning! Your sleep stat is down to 2! You must get some rest!" if self.sleep == 2
       end
       puts "Oh no! Bad luck! Your thirst, hunger, and sleep stats have decreased!"

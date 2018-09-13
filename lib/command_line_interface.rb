@@ -12,8 +12,9 @@ def create_character_environments(character)
 end
 
 def help
-  sleep(0.8)
+  sleep(1.0)
   puts "Here is what you can do:"
+  sleep(0.7)
   puts "- help: displays this help message"
   puts "- my stats: allows you to view your current character stats"
   puts "- explore: displays the different areas you can explore"
@@ -27,7 +28,7 @@ def help
   puts "- forage: allows you to forage for food and adds it to your inventory"
   puts "- my inventory: allows you to view your inventory"
   puts "- quit: quits this program"
-  sleep(0.7)
+  sleep(0.8)
 end
 
 def where_to_explore
