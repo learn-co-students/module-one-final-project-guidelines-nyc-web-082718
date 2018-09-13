@@ -22,7 +22,7 @@ class Character < ActiveRecord::Base
   end
 
   def collect_wood(current_location)
-    if current_location[0].resource == "wood"
+    if current_location.resource == "wood"
       puts "Collecting wood..."
       object = self.inventories.where(name: "wood")
       object[0].increment!(:amount, 5)
@@ -32,7 +32,7 @@ class Character < ActiveRecord::Base
   end
 
   def collect_sand(current_location)
-    if current_location[0].resource == "sand"
+    if current_location.resource == "sand"
       puts "Collecting sand..."
       object = self.inventories.where(name: "sand")
       object[0].increment!(:amount, 5)
@@ -42,7 +42,7 @@ class Character < ActiveRecord::Base
   end
 
   def collect_water(current_location)
-    if current_location[0].water == true
+    if current_location.water == true
       puts "Collecting water..."
       object = self.inventories.where(name: "water")
       object[0].increment!(:amount, 5)
@@ -52,7 +52,7 @@ class Character < ActiveRecord::Base
   end
 
   def collect_stone(current_location)
-    if current_location[0].resource == "stone"
+    if current_location.resource == "stone"
       puts "Collecting stone..."
       object = self.inventories.where(name: "stone")
       object[0].increment!(:amount, 5)
@@ -105,8 +105,8 @@ class Character < ActiveRecord::Base
       wood = self.inventories.where(name: "wood")
       wood_count = wood[0].amount
       if wood_count >= 10
-        puts "Building wood shelter in the #{current_location[0].name}..."
-        Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "wood")
+        puts "Building wood shelter in the #{current_location.name}..."
+        Shelter.create(character_id: self.id, environment_id: current_location.id, material: "wood")
         wood[0].decrement!(:amount, 10)
         puts "You now have #{wood[0].amount} wood."
       else
@@ -116,8 +116,8 @@ class Character < ActiveRecord::Base
       stone = self.inventories.where(name: "stone")
       stone_count = stone[0].amount
       if stone_count >= 15
-        puts "Building stone shelter in the #{current_location[0].name}..."
-        Shelter.create(character_id: self.id, environment_id: current_location[0].id, material: "stone")
+        puts "Building stone shelter in the #{current_location.name}..."
+        Shelter.create(character_id: self.id, environment_id: current_location.id, material: "stone")
         stone[0].decrement!(:amount, 15)
         puts "You now have #{stone[0].amount} stone."
       else
@@ -141,7 +141,7 @@ class Character < ActiveRecord::Base
   end
 
   def go_to_sleep(current_location)
-    if current_location[0].shelters.count > 0
+    if current_location.shelters.count > 0
       puts "sleeping..."
       if self.sleep < 10
         self.increment!(:sleep, 1)
@@ -158,7 +158,7 @@ class Character < ActiveRecord::Base
 
   def forage_for_food(forage_command, current_location)
     if forage_command == "berries"
-      if current_location[0].food_type == "berries"
+      if current_location.food_type == "berries"
         puts "Foraging for berries..."
         object = self.inventories.where(name: "food")
         object[0].increment!(:amount, 5)
@@ -166,7 +166,7 @@ class Character < ActiveRecord::Base
         puts "You must be in the forest to forage for berries!"
       end
     elsif forage_command == "scorpions"
-      if current_location[0].food_type == "scorpions"
+      if current_location.food_type == "scorpions"
         puts "Hunting for scorpions..."
         object = self.inventories.where(name: "food")
         object[0].increment!(:amount, 2)
@@ -174,7 +174,7 @@ class Character < ActiveRecord::Base
         puts "You must be in the desert to hunt scorpions!"
       end
     elsif forage_command == "fish"
-      if current_location[0].food_type == "fish"
+      if current_location.food_type == "fish"
         puts "Fishing for fish..."
         object = self.inventories.where(name: "food")
         object[0].increment!(:amount, 1)
@@ -182,7 +182,7 @@ class Character < ActiveRecord::Base
         puts "You must be by the lake to fish!"
       end
     elsif forage_command == "squirrels"
-      if current_location[0].food_type == "squirrels"
+      if current_location.food_type == "squirrels"
         puts "Hunting for squirrels..."
         object = self.inventories.where(name: "food")
         object[0].increment!(:amount, 1)
@@ -208,6 +208,27 @@ class Character < ActiveRecord::Base
       puts "You now have #{object[0].amount} food."
     else
       puts "You must look for more food in order to eat!"
+    end
+    self.update(health: self.create_health)
+  end
+
+  def decrease_stats
+    array = [false, false, false, false, false, false, false, true]
+    array.sample
+    if array.sample == true
+      if self.thirst > 1
+        self.decrement!(:thirst, 2)
+        puts "Warning! Your thirst stat is down to 2! You must drink more water!" if self.thirst == 2
+      end
+      if self.hunger > 1
+        self.decrement!(:hunger, 2)
+        puts "Warning! Your hunger stat is down to 2! You must eat something!" if self.hunger == 2
+      end
+      if self.sleep > 0
+        self.decrement!(:sleep, 1)
+        puts "Warning! Your sleep stat is down to 2! You must get some rest!" if self.sleep == 2
+      end
+      puts "Oh no! Bad luck! Your thirst, hunger, and sleep stats have decreased!"
     end
     self.update(health: self.create_health)
   end
