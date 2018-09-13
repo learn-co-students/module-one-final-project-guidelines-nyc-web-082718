@@ -70,11 +70,14 @@ class Character < ActiveRecord::Base
     water_count = water_object[0].amount
     stone_object = self.inventories.where(name: "stone")
     stone_count = stone_object[0].amount
+    food_object = self.inventories.where(name: "food")
+    food_count = food_object(0).amount
     puts "You currently have the following resources:"
     puts "#{wood_count} wood"
     puts "#{sand_count} sand"
     puts "#{water_count} water"
     puts "#{stone_count} stone"
+    puts "#{food_count} food"
   end
 
   def drink_water
@@ -153,5 +156,44 @@ class Character < ActiveRecord::Base
     self.update(health: self.create_health)
   end
 
+  def forage_for_food(forage_command, current_location)
+    if forage_command == "berries"
+      if current_location[0].food_type == "berries"
+        puts "Foraging for berries..."
+        object = self.inventories.where(name: "food")
+        object[0].increment!(:amount, 5)
+      else
+        puts "You must be in the forest to forage for berries!"
+      end
+    elsif forage_command == "scorpions"
+      if current_location[0].food_type == "scorpions"
+        puts "Hunting for scorpions..."
+        object = self.inventories.where(name: "food")
+        object[0].increment!(:amount, 2)
+      else
+        puts "You must be in the desert to hunt scorpions!"
+      end
+    elsif forage_command == "fish"
+      if current_location[0].food_type == "fish"
+        puts "Fishing for fish..."
+        object = self.inventories.where(name: "food")
+        object[0].increment!(:amount, 1)
+      else
+        puts "You must be by the lake to fish!"
+      end
+    elsif forage_command == "squirrels"
+      if current_location[0].food_type == "squirrels"
+        puts "Hunting for squirrels..."
+        object = self.inventories.where(name: "food")
+        object[0].increment!(:amount, 1)
+      else
+        puts "You must be in the cave to hunt squirrels!"
+      end
+    end
+  end
+
+  def eat_food
+
+  end
 
 end
