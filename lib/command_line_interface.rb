@@ -148,65 +148,66 @@ def match_loop(array)
   punch_win = ["Nice punch, one more of those and they'll go down!", "Good contact, next one should knock em out!", "Brutal hammerfist!", "Their face is really taking a beating!", "They must be seeing stars!", "You're a regular Rocky Balboa!"]
   punch_loss = ["I can't believe they blocked that!", "They slipped and countered, be more careful!", "Ouch, they got you good!", "Your eyes are swelling shut!", "If you don't get into the fight, they may have to call it!", "You were knocked down, get back up!"]
   kick_win = ["That knee is looking wobbly, throw another kick!", "Your opponents leg is really swelling up!", "You're really crippling their movement!", "Their leg is buckling!", "Keep up the kicks!", "Your kicks are super effective!"]
-  kick_loss =["Throw your hips into it! Your not kicking hard enough!", "They checked your kick, be more careful!", "You slipped and your opponent made you pay for it!", "You through a lazy kick and took a punch to the face for it!", "You're lucky that check didn't break your leg!", "That kick looked like it hurt you more than your opponent!"]
+  kick_loss =["Throw your hips into it! Your not kicking hard enough!", "They checked your kick, be more careful!", "You slipped and your opponent made you pay for it!", "You threw a lazy kick and took a punch to the face for it!", "You're lucky that check didn't break your leg!", "That kick looked like it hurt you more than your opponent!"]
   takedown_win =["Nice takedown, go for the arm bar!", "Nice slam! That'll score you points with the judges!", "Way to keep your opponent off their feet!", "You've got their back! End it!", "Nice! Go for the choke!", "With takedowns like that, your opponent won't be getting off the mat!", "You've landed in full mount, end it!"]
   takedown_loss =["I can't believe they stuffed that!", "They slipped your takedown and countered you with a kick!", "They are defending against the takedown with the fence!", "Get them off the fence! Or stop going for the takedown!", "They reversed your takedown!", "Don't let them get the guillotine!"]
   draw =["These fighters are looking really tired!", "This fight is too close to call!", "How are they still on their feet?", "We've got an exciting fight!", "What an even match!", "Joe Rogan is going to regret missing this one!"]
 
   while x < 6
-    Fight.create(user_id: Player.last.id, fighter_id: array[x].id)
-      player_damage = 0
-      computer_damage = 0
-       x == 5 ? championship_announcement(array[x].name) :  match_announcement(array[x].name)
+    if Player.last.losses < 3
+      Fight.create(user_id: Player.last.id, fighter_id: array[x].id)
+        player_damage = 0
+        computer_damage = 0
+         x == 5 ? championship_announcement(array[x].name) :  match_announcement(array[x].name)
 
-      while player_damage < 3 && computer_damage < 3
-        puts "\n"
-        user_action = moves
-        com_action = rand(3)
-        puts "\n"
-        if user_action == 1
-          if com_action == 1
-            puts punch_win.sample
-            computer_damage += 1
-            sleep 1
-          elsif com_action == 2
-            puts punch_loss.sample
-            player_damage += 1
-            sleep 1
+        while player_damage < 3 && computer_damage < 3
+          puts "\n"
+          user_action = moves
+          com_action = rand(3)
+          puts "\n"
+          if user_action == 1
+            if com_action == 1
+              puts punch_win.sample
+              computer_damage += 1
+              sleep 1
+            elsif com_action == 2
+              puts punch_loss.sample
+              player_damage += 1
+              sleep 1
+            else
+              puts draw.sample
+              sleep 1
+            end
+          elsif user_action == 2
+            if com_action == 2
+              puts kick_win.sample
+              computer_damage += 1
+              sleep 1
+            elsif com_action == 1
+              puts kick_loss.sample
+              player_damage += 1
+              sleep 1
+            else
+              puts draw.sample
+              sleep 1
+            end
           else
-            puts draw.sample
-            sleep 1
-          end
-        elsif user_action == 2
-          if com_action == 2
-            puts kick_win.sample
-            computer_damage += 1
-            sleep 1
-          elsif com_action == 1
-            puts kick_loss.sample
-            player_damage += 1
-            sleep 1
-          else
-            puts draw.sample
-            sleep 1
-          end
-        else
-          if com_action == 1
-            puts takedown_win.sample
-            computer_damage += 1
-            sleep 1
-          elsif com_action == 2
-            puts takedown_loss.sample
-            player_damage += 1
-            sleep 1
-          else
-            puts draw.sample
-            sleep 1
+            if com_action == 1
+              puts takedown_win.sample
+              computer_damage += 1
+              sleep 1
+            elsif com_action == 2
+              puts takedown_loss.sample
+              player_damage += 1
+              sleep 1
+            else
+              puts draw.sample
+              sleep 1
+            end
           end
         end
-      end
 
-      if player_damage == 3
+      if player_damage == 3sS
         puts "\n" "That was a tough fight, get back in the ring and shake off that loss."
         losses = Player.last.losses
         Player.last.update_column(:losses, losses + 1)
@@ -221,7 +222,11 @@ def match_loop(array)
       else
         puts "something is wrong"
       end
+    else
+      puts "\n" "Hey, I'm Dana White. You've lost your contract with the UFC. You lost too many times. Better luck next time #{Player.last.name}" "\n" "\n" "**************************************" "\n" "\n"
+      return
+    end
     end #End while loop aka. Each individual fight
     # array logic
-  puts "\n" "Congratulations to the new UFC Champion of the world! #{Player.last.name}!!!" "\n" "\n" "**************************************" "\n" "\n" 
+  puts "\n" "Congratulations to the new UFC Champion of the world! #{Player.last.name}!!!" "\n" "\n" "**************************************" "\n" "\n"
 end
