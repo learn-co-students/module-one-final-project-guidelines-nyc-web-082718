@@ -11,15 +11,4 @@ require_relative "../app/models/long_word.rb"
 require_relative "../app/models/short_word.rb"
 require_relative "../app/models/word_link.rb"
 
-welcome
-# essay_or_rhyme
-# run_essay_editor
-run_rhymer
-  # binding.pry
-
-
-
-
-# .split(/( \p{P})|(\p{P} )| /)
-# .split(/( \p{P}*)|(\p{P}* )|(\p{P}*\z)| /)
-# Didn't I tell you?? What's wrong with her, I asked.
+run_essay_editor

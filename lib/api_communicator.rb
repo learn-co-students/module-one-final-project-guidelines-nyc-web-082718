@@ -2,19 +2,19 @@ require 'rest-client'
 require 'json'
 require 'pry'
 
-def add_words_from_array_to_db(words_array, query_type)
+def add_words_from_array_to_db(words_array)
   words_array.each do |word_string|
-    add_word_and_related_words_to_db(word_string, query_type)
+    add_word_and_related_words_to_db(word_string)
   end
 end
 
 #### RUN METHOD ###
-def add_word_and_related_words_to_db(word_string, query_type)
+def add_word_and_related_words_to_db(word_string)
 # part 1 ################################################
   original_word_hash = get_info_hash(word_string)
-  original_word = find_or_add_word_to_db(original_word_hash) #part 1
+  original_word = find_or_add_word_to_db(original_word_hash)
 # part 2 ################################################
-  add_related_words_to_db(word_string, query_type)   #part 2
+  add_related_words_to_db(word_string)   #part 2
 
 
 end
@@ -23,8 +23,6 @@ end
 #### PART 1 ####
 
 def get_info_hash(word_string)
-
-
   sl_array = query("info", word_string)
   word_hash = sl_array[0]
   turn_original_hash_into_info_hash(word_hash)
@@ -48,25 +46,10 @@ def find_or_add_word_to_db(word_hash)
   end
 end
 
-# def find_or_add_word_to_db(word_string)
-#   word_hash = get_info_hash(word_string)
-#   if short_hash?(word_hash)
-#     word = ShortWord.create(word_hash)
-#   else
-#     word = LongWord.create(word_hash)
-#   end
-#   word
-# end
+################ PART 2
 
-  ## Part 1 - Child Methods ##
 
-  def short_hash?(word_hash)
-    word_hash["length"] < 6
-  end
-
-#### PART 2 ####
-
-def add_related_words_to_db(word_string, query_type)
+def add_related_words_to_db(word_string)
   original_word = nil
   if short_string?(word_string)
     original_word = ShortWord.find_by(word: word_string)
@@ -74,14 +57,10 @@ def add_related_words_to_db(word_string, query_type)
     original_word = LongWord.find_by(word: word_string)
   end
 
-
-  # query_type = "synonym"
-
-  word_objects_array = query(query_type, word_string)
+  word_objects_array = query("synonym", word_string)
     # word_objects_array looks like:
         # [{word}{word}...]
   words_without_spaces_array = word_objects_array.delete_if do |word_hash|
-    # binding.pry
     word_hash["word"].include? " "
   end
 
@@ -100,10 +79,10 @@ def add_related_words_to_db(word_string, query_type)
     # create WordLink for each word if length is opposite of original word
     #
     if original_word.class != new_word_object.class
-      if original_word.class == ShortWord
-        WordLink.create(short_word: original_word, long_word: new_word_object, link_type: query_type)
-      elsif original_word.class == LongWord
-        WordLink.create(short_word: new_word_object, long_word: original_word, link_type: query_type)
+      if original_word.class == ShortWord && !WordLink.find_by(short_word: original_word, long_word: new_word_object)
+        WordLink.create(short_word: original_word, long_word: new_word_object)
+      elsif original_word.class == LongWord && !WordLink.find_by(short_word: new_word_object, long_word: original_word)
+        WordLink.create(short_word: new_word_object, long_word: original_word)
       end
     end
   end
@@ -111,144 +90,34 @@ def add_related_words_to_db(word_string, query_type)
 
 end
 
-  ## Part 2 - Child Methods ##
-
-  def query(query_type, input)
-
-    #
-    param = case query_type
-    when "info"
-      "sl"
-    when "synonym"
-      "rel_syn"
-    when "antonym"
-      "rel_ant"
-    when "rhyme"
-      "rel_rhy"
-    end
-
-    # url = "https://api.datamuse.com/words?#{param}=#{input}&md=spd"
-    url = "https://api.datamuse.com/words?#{param}=#{input}&md=sp"
-    words_array = get_words_from_api(url)
+def query(query_type, input)
+  param = case query_type
+  when "info"
+    "sl"
+  when "synonym"
+    "rel_syn"
   end
 
-  def turn_original_hash_into_info_hash(word_hash)
-    word_hash.delete("score")
-    word_hash["length"] = word_hash["word"].length
-    word_hash
-  end
-
-  def short_string?(word_string)
-    word_string.length < 6
-  end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  url = "https://api.datamuse.com/words?#{param}=#{input}&md=sp"
+  words_array = get_words_from_api(url)
+end
 
 def get_words_from_api(url)
- #make the web request
- #
  response_string = RestClient.get(url)
- #
  response_hash = JSON.parse(response_string)
 end
 
-# def split_into_words_array(text_string)
-#   input = text_string.downcase
-#   input_array = input.split(" ")
-#
-#   puts input_array
-# end
 
-def make_word_object_from_api(word)
-  query_types = ["syn", "ant", "rhy"]
-  #loop through query types, populate all of word's attributes
-  query_types.each do |type|
-    # get api for syn or ant or rhy
-    query(query_type, word)
-    # populate database
-  end
+def turn_original_hash_into_info_hash(word_hash)
+  word_hash.delete("score")
+  word_hash["length"] = word_hash["word"].length
+  word_hash
 end
-#
-#
-# def save_all_words_in_word_array_to_db(words_array)
-#   words_array.each do |word_object|
-#      if word_object_short?(word_object)
-#        #########################
-#        # TO DO: figure out how to get each of the following
-#        word = word_object["word"]
-#        length = word.length
-#        # syllables =
-#        ##########################
-#        ShortWord.new(word: word, length: length) #, syllables: syllables)
-#      else
-#        LongWord.new(word: word, length: length)# , syllables: syllables)
-#      end
-#    end
-# end
-#
-# def turn_text_to_synonyms
-#  welcome
-#  input = get_text.downcase
-#  input_array = input.split(" ")
-#  words_with_no_synonyms = []
-#  output_array = input_array.map do |word|
-#    if word.length >= 6
-#      synonyms = get_synonyms(word) # array of syns
-#      short_words = filter_short_words(synonyms) # array of short syns
-#      if short_words != []
-#        word_hash = short_words.sample # single short synonym, as a hash
-#        new_word = word_hash["word"] # new word as string
-#      else
-#        words_with_no_synonyms << word
-#      end
-#    end
-#  end
-#  puts output_array.join(" ")
-#  puts "The following words could not be shortened: #{words_with_no_synonyms}"
-#  #
-# end
-#
-# def turn_text_to_rhymes
-#  welcome
-#  input = get_text.downcase
-#  input_array = input.split(" ")
-#  words_with_no_rhymes = []
-#  output_array = input_array.map do |word|
-#    rhymes = get_rhymes(word) # array of rhymes
-#    if rhymes != []
-#      ####################################
-#      # TO DO:
-#      # REMOVE FUNCTION WORDS
-#      # CHECK THAT SYLLABLES ARE THE SAME
-#      # CHECK THAT PART OF SPEECH IS THE SAME
-#      ####################################
-#      word_hash = rhymes.sample # random rhyme
-#      new_word = word_hash["word"] # new word as string
-#    else
-#      words_with_no_rhymes << word
-#    end
-#  end
-#  puts output_array.join(" ")
-#  puts "The following words had no rhymes: #{words_with_no_synonyms}"
-#  #
-# end
 
-# turn_text_to_rhymes
+def short_string?(word_string)
+  word_string.length < 6
+end
 
-
-#
+def short_hash?(word_hash)
+  word_hash["length"] < 6
+end
