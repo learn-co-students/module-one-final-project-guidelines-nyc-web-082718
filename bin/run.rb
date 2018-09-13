@@ -14,3 +14,11 @@ require_relative "../app/models/word_link.rb"
 welcome
 # essay_or_rhyme
 run_essay_editor
+  # binding.pry
+
+
+
+
+# .split(/( \p{P})|(\p{P} )| /)
+# .split(/( \p{P}*)|(\p{P}* )|(\p{P}*\z)| /)
+# Didn't I tell you?? What's wrong with her, I asked.

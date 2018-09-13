@@ -4,7 +4,7 @@ def welcome
 end
 
 def essay_or_rhyme
-  puts "Would you like to edit an essay or spit some rhymes? (Type E or R)"
+  puts "Would you like to edit an essay or spit some rhymes? (Type e or r)"
   if get_text == "e"
     run_essay_editor
   elsif get_text == "r"
@@ -16,11 +16,12 @@ def essay_or_rhyme
 end
 
 def get_text
-  gets.chomp.downcase
+  gets.chomp # .downcase
 end
 
 def split_into_words_array(input)
-  input_array = input.split(" ")
+  # input_array = input.split(" ")
+  input_array = input.split(/( \p{P}*)|(\p{P}* )|(\p{P}*\z)| /)
 end
 
 #################### essay editor
@@ -29,12 +30,14 @@ def run_essay_editor
   puts "Begin essay editor: please enter your text."
   input = get_text
   words_array = split_into_words_array(input)
-  add_words_from_array_to_db(words_array)
+  downcased_words_array = words_array.map { |word| word.downcase }
+
+  add_words_from_array_to_db(downcased_words_array)
   lengthen_or_shorten(words_array)
 end
 
 def lengthen_or_shorten(words_array)
-  puts "Would you like to lengthen or shorten your essay? (Type L or S)"
+  puts "Would you like to lengthen or shorten your essay? (Type l or s)"
   length_option = get_text
   if length_option == "l"
     lengthen_essay(words_array)
@@ -52,7 +55,7 @@ def lengthen_essay(words_array)
   new_words_array = words_array.map do |word|
     if short_string?(word)
       # do something
-      short_word_object = ShortWord.find_by(word: word)
+      short_word_object = ShortWord.find_by(word: word.downcase)
       wordlinks_list = WordLink.where(short_word: short_word_object, link_type: "synonym")
       # binding.pry
       if wordlinks_list.empty?
@@ -60,12 +63,16 @@ def lengthen_essay(words_array)
         # do not switch word
         word
       else
-        binding.pry
+        # binding.pry
         tags_array = arrayify_string(short_word_object.tags)
         # switch word - check if multiple parts of speech
         if tags_array.length <= 1
           # only one part of speech
-          wordlinks_list.sample.long_word.word
+          if cap?(word)
+            cap(wordlinks_list.sample.long_word.word)
+          else
+            wordlinks_list.sample.long_word.word
+          end
         else
           # multiple parts of speech
           # binding.pry
@@ -75,14 +82,23 @@ def lengthen_essay(words_array)
             # find words whose part of speech matches
             word_link_object.long_word.tags.include? part_of_speech
           end
-          matching_pos_list.sample.long_word.word
+          if cap?(word)
+            cap(matching_pos_list.sample.long_word.word)
+          else
+            matching_pos_list.sample.long_word.word
+          end
         end
       end
     else
       word
     end
   end
-  new_text = new_words_array.join(" ")
+
+  # new_words_array_cleaned = new_words_array.delete_if { |word| word == "" || word == " " }
+  #
+
+  new_text = new_words_array.join
+  binding.pry
   puts new_text
   if !unlengthened_words.empty?
     puts "We were unable to lengthen the following words:"
@@ -90,33 +106,7 @@ def lengthen_essay(words_array)
   end
 end
 
-def shorten_essay(words_array)
-  unshortened_words = []
-
-  new_words_array = words_array.map do |word|
-    if !short_string?(word)
-      # do something
-      long_word_object = LongWord.find_by(word: word)
-      wordlinks_list = WordLink.where(long_word: long_word_object, link_type: "synonym")
-      # binding.pry
-      if wordlinks_list.empty?
-        unshortened_words << word
-        word
-      else
-        # switch_words(long_word_object, "short")
-        # wordlinks_list.sample.short_word.word
-      end
-    else
-      word
-    end
-  end
-  new_text = new_words_array.join(" ")
-  puts new_text
-  puts "We were unable to shorten the following words:"
-  puts unshortened_words.join(", ")
-end
-
-
+# write shorten essay dfn!!!
 
 
 
@@ -125,6 +115,15 @@ def arrayify_string(string)
   array = string_without_brackets.split("\", \"")
 end
 
+def cap?(word_string)
+  word_string[0].upcase == word_string[0]
+end
+
+def cap(word_string)
+  first_letter = word_string[0].upcase
+  rest = word_string[1..-1]
+  first_letter + rest
+end
 
 
 ################### rhymer

@@ -38,7 +38,7 @@ def find_or_add_word_to_db(word_hash)
   elsif LongWord.find_by(word: word)
     LongWord.find_by(word: word)
   else
-    
+
     word_object = nil
     if short_hash?(word_hash)
       word_object = ShortWord.create(word_hash)
@@ -94,7 +94,11 @@ def add_related_words_to_db(word_string)
   related_words_hash.each do |type, word_objects_array|
     # word_objects_array looks like:
         # [{word}{word}...]
-    word_objects_array.each do |word_hash|
+    words_without_spaces_array = word_objects_array.select do |word_hash|
+      # binding.pry
+      !word_hash["word"].include? " "
+    end
+    words_without_spaces_array.each do |word_hash|
       new_word = word_hash[:word]
       # word_hash looks like:
       # { word: "sad", score: 3, numSyllables: 1,.....}
@@ -107,7 +111,7 @@ def add_related_words_to_db(word_string)
         # either a ShortWord or a LongWord
 
       # create WordLink for each word if length is opposite of original word
-      # 
+      #
       if original_word.class != new_word_object.class
         if original_word.class == ShortWord
           WordLink.create(short_word: original_word, long_word: new_word_object, link_type: type)
@@ -124,7 +128,7 @@ end
 
   def query(query_type, input)
 
-    # 
+    #
     param = case query_type
     when "info"
       "sl"
@@ -170,9 +174,9 @@ end
 
 def get_words_from_api(url)
  #make the web request
- # 
+ #
  response_string = RestClient.get(url)
- # 
+ #
  response_hash = JSON.parse(response_string)
 end
 
@@ -229,7 +233,7 @@ end
 #  end
 #  puts output_array.join(" ")
 #  puts "The following words could not be shortened: #{words_with_no_synonyms}"
-#  # 
+#  #
 # end
 #
 # def turn_text_to_rhymes
@@ -254,10 +258,10 @@ end
 #  end
 #  puts output_array.join(" ")
 #  puts "The following words had no rhymes: #{words_with_no_synonyms}"
-#  # 
+#  #
 # end
 
 # turn_text_to_rhymes
 
 
-# 
+#
