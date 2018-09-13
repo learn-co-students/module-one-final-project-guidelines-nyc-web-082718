@@ -57,9 +57,26 @@ def lengthen_essay(words_array)
       # binding.pry
       if wordlinks_list.empty?
         unlengthened_words << word
+        # do not switch word
         word
       else
-        wordlinks_list.sample.long_word.word
+        binding.pry
+        tags_array = arrayify_string(short_word_object.tags)
+        # switch word - check if multiple parts of speech
+        if tags_array.length <= 1
+          # only one part of speech
+          wordlinks_list.sample.long_word.word
+        else
+          # multiple parts of speech
+          # binding.pry
+          puts "Which of the following describes '#{word}': #{tags_array.join(", ")}?"
+          part_of_speech = get_text
+          matching_pos_list = wordlinks_list.select do |word_link_object|
+            # find words whose part of speech matches
+            word_link_object.long_word.tags.include? part_of_speech
+          end
+          matching_pos_list.sample.long_word.word
+        end
       end
     else
       word
@@ -67,8 +84,10 @@ def lengthen_essay(words_array)
   end
   new_text = new_words_array.join(" ")
   puts new_text
-  puts "We were unable to lengthen the following words:"
-  puts unlengthened_words.join(", ")
+  if !unlengthened_words.empty?
+    puts "We were unable to lengthen the following words:"
+    puts unlengthened_words.join(", ")
+  end
 end
 
 def shorten_essay(words_array)
@@ -84,7 +103,8 @@ def shorten_essay(words_array)
         unshortened_words << word
         word
       else
-        wordlinks_list.sample.short_word.word
+        # switch_words(long_word_object, "short")
+        # wordlinks_list.sample.short_word.word
       end
     else
       word
@@ -95,6 +115,17 @@ def shorten_essay(words_array)
   puts "We were unable to shorten the following words:"
   puts unshortened_words.join(", ")
 end
+
+
+
+
+
+def arrayify_string(string)
+  string_without_brackets = string.sub("[\"", "").sub("\"]", "")
+  array = string_without_brackets.split("\", \"")
+end
+
+
 
 ################### rhymer
 
