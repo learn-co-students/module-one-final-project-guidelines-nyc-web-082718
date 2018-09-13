@@ -1,4 +1,4 @@
 class WordLink < ActiveRecord::Base
-  belongs_to :longword
-  belongs_to :shortword
+  belongs_to :long_word
+  belongs_to :short_word
 end

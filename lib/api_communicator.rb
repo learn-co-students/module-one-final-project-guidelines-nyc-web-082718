@@ -10,36 +10,46 @@ end
 
 #### RUN METHOD ###
 def add_word_and_related_words_to_db(word_string)
-
+# part 1 ################################################
   original_word_hash = get_info_hash(word_string)
-  original_word = add_word_to_db(original_word_hash)       #part 1
-  new_word = add_related_words_to_db(word_string)   #part 2
+  original_word = find_or_add_word_to_db(original_word_hash)       #part 1
+# part 2 ################################################
+  add_related_words_to_db(word_string)   #part 2
 
-  # make wordlink if orig/new are diff            #part 3
+
 end
 
 
 #### PART 1 ####
 
 def get_info_hash(word_string)
-  # binding.pry
+
+
   sl_array = query("info", word_string)
   word_hash = sl_array[0]
   turn_original_hash_into_info_hash(word_hash)
 end
 
-def add_word_to_db(word_hash)
-  if short?(word_hash)
-    word = ShortWord.create(word_hash)
+def find_or_add_word_to_db(word_hash)
+  word = word_hash[:word]
+  if ShortWord.find_by(word: word)
+    ShortWord.find_by(word: word)
+  elsif LongWord.find_by(word: word)
+    LongWord.find_by(word: word)
   else
-    word = LongWord.create(word_hash)
+    word_object = nil
+    if short_hash?(word_hash)
+      word_object = ShortWord.create(word_hash)
+    else
+      word_object = LongWord.create(word_hash)
+    end
+    word_object
   end
-  word
 end
 
-# def add_word_to_db(word_string)
+# def find_or_add_word_to_db(word_string)
 #   word_hash = get_info_hash(word_string)
-#   if short?(word_hash)
+#   if short_hash?(word_hash)
 #     word = ShortWord.create(word_hash)
 #   else
 #     word = LongWord.create(word_hash)
@@ -49,14 +59,24 @@ end
 
   ## Part 1 - Child Methods ##
 
-  def short?(word_hash)
+  def short_hash?(word_hash)
     word_hash["length"] < 6
   end
 
 #### PART 2 ####
 
 def add_related_words_to_db(word_string)
-  query_types = ["synonym", "antonym", "rhyme"]
+  original_word = nil
+  if short_string?(word_string)
+    original_word = ShortWord.find_by(word: word_string)
+  else
+    original_word = LongWord.find_by(word: word_string)
+  end
+
+
+
+
+  query_types = ["rhyme", "synonym", "antonym"]
   related_words_hash = {}
 
   query_types.each do |type|
@@ -72,15 +92,30 @@ def add_related_words_to_db(word_string)
   related_words_hash.each do |type, word_objects_array|
     # word_objects_array looks like:
         # [{word}{word}...]
-    word_objects_array.each do |word_object|
-      # word_object looks like:
+    word_objects_array.each do |word_hash|
+      new_word = word_hash[:word]
+      # word_hash looks like:
       # { word: "sad", score: 3, numSyllables: 1,.....}
-      info_hash = turn_original_hash_into_info_hash(word_object)
+
+      # add words to db/create ShortWord/LongWords
+      info_hash = turn_original_hash_into_info_hash(word_hash)
         # info_hash looks like:
         # { word: "sad", numSyllables: 1,.....}
-      add_word_to_db(info_hash)
+      new_word_object = find_or_add_word_to_db(info_hash)
+        # either a ShortWord or a LongWord
+
+      # create WordLink for each word if length is opposite of original word
+      # binding.pry
+      if original_word.class != new_word_object.class
+        if original_word.class == ShortWord
+          WordLink.create(short_word: original_word, long_word: new_word_object, link_type: type)
+        elsif original_word.class == LongWord
+          WordLink.create(short_word: new_word_object, long_word: original_word, link_type: type)
+        end
+      end
     end
   end
+
 end
 
   ## Part 2 - Child Methods ##
@@ -110,6 +145,10 @@ end
     word_hash
   end
 
+  def short_string?(word_string)
+    word_string.length < 6
+  end
+
 
 
 
@@ -129,7 +168,9 @@ end
 
 def get_words_from_api(url)
  #make the web request
+ # binding.pry
  response_string = RestClient.get(url)
+ # binding.pry
  response_hash = JSON.parse(response_string)
 end
 
