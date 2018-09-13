@@ -2,19 +2,19 @@ require 'rest-client'
 require 'json'
 require 'pry'
 
-def add_words_from_array_to_db(words_array)
+def add_words_from_array_to_db(words_array, query_type)
   words_array.each do |word_string|
-    add_word_and_related_words_to_db(word_string)
+    add_word_and_related_words_to_db(word_string, query_type)
   end
 end
 
 #### RUN METHOD ###
-def add_word_and_related_words_to_db(word_string)
+def add_word_and_related_words_to_db(word_string, query_type)
 # part 1 ################################################
   original_word_hash = get_info_hash(word_string)
   original_word = find_or_add_word_to_db(original_word_hash) #part 1
 # part 2 ################################################
-  add_related_words_to_db(word_string)   #part 2
+  add_related_words_to_db(word_string, query_type)   #part 2
 
 
 end
@@ -31,14 +31,13 @@ def get_info_hash(word_string)
 end
 
 def find_or_add_word_to_db(word_hash)
-  word = word_hash[:word]
+  word = word_hash["word"]
   #  first check if exists already
   if ShortWord.find_by(word: word)
     ShortWord.find_by(word: word)
   elsif LongWord.find_by(word: word)
     LongWord.find_by(word: word)
   else
-
     word_object = nil
     if short_hash?(word_hash)
       word_object = ShortWord.create(word_hash)
@@ -67,7 +66,7 @@ end
 
 #### PART 2 ####
 
-def add_related_words_to_db(word_string)
+def add_related_words_to_db(word_string, query_type)
   original_word = nil
   if short_string?(word_string)
     original_word = ShortWord.find_by(word: word_string)
@@ -76,51 +75,39 @@ def add_related_words_to_db(word_string)
   end
 
 
+  # query_type = "synonym"
 
-
-  query_types = ["rhyme", "synonym", "antonym"]
-  related_words_hash = {}
-
-  query_types.each do |type|
-    word_objects_array = query(type, word_string)
-    related_words_hash[type] = word_objects_array
-  end
-
-  # related_words_hash will look like:
-      # {"synonym": [{w}{w}{w}...],
-      # "antonym": [{word}{word}...],
-      # "rhyme": [{word}{word}...]}
-
-  related_words_hash.each do |type, word_objects_array|
+  word_objects_array = query(query_type, word_string)
     # word_objects_array looks like:
         # [{word}{word}...]
-    words_without_spaces_array = word_objects_array.select do |word_hash|
-      # binding.pry
-      !word_hash["word"].include? " "
-    end
-    words_without_spaces_array.each do |word_hash|
-      new_word = word_hash[:word]
-      # word_hash looks like:
-      # { word: "sad", score: 3, numSyllables: 1,.....}
+  words_without_spaces_array = word_objects_array.delete_if do |word_hash|
+    # binding.pry
+    word_hash["word"].include? " "
+  end
 
-      # add words to db/create ShortWord/LongWords
-      info_hash = turn_original_hash_into_info_hash(word_hash)
-        # info_hash looks like:
-        # { word: "sad", numSyllables: 1,.....}
-      new_word_object = find_or_add_word_to_db(info_hash)
-        # either a ShortWord or a LongWord
+  words_without_spaces_array.each do |word_hash|
+    new_word = word_hash["word"]
+    # word_hash looks like:
+    # { word: "sad", score: 3, numSyllables: 1,.....}
 
-      # create WordLink for each word if length is opposite of original word
-      #
-      if original_word.class != new_word_object.class
-        if original_word.class == ShortWord
-          WordLink.create(short_word: original_word, long_word: new_word_object, link_type: type)
-        elsif original_word.class == LongWord
-          WordLink.create(short_word: new_word_object, long_word: original_word, link_type: type)
-        end
+    # add words to db/create ShortWord/LongWords
+    info_hash = turn_original_hash_into_info_hash(word_hash)
+      # info_hash looks like:
+      # { word: "sad", numSyllables: 1,.....}
+    new_word_object = find_or_add_word_to_db(info_hash)
+      # either a ShortWord or a LongWord
+
+    # create WordLink for each word if length is opposite of original word
+    #
+    if original_word.class != new_word_object.class
+      if original_word.class == ShortWord
+        WordLink.create(short_word: original_word, long_word: new_word_object, link_type: query_type)
+      elsif original_word.class == LongWord
+        WordLink.create(short_word: new_word_object, long_word: original_word, link_type: query_type)
       end
     end
   end
+
 
 end
 

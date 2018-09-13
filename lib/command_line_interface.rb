@@ -32,7 +32,7 @@ def run_essay_editor
   words_array = split_into_words_array(input)
   downcased_words_array = words_array.map { |word| word.downcase }
 
-  add_words_from_array_to_db(downcased_words_array)
+  add_words_from_array_to_db(downcased_words_array, "synonym")
   lengthen_or_shorten(words_array)
 end
 
@@ -57,13 +57,11 @@ def lengthen_essay(words_array)
       # do something
       short_word_object = ShortWord.find_by(word: word.downcase)
       wordlinks_list = WordLink.where(short_word: short_word_object, link_type: "synonym")
-      # binding.pry
       if wordlinks_list.empty?
         unlengthened_words << word
         # do not switch word
         word
       else
-        # binding.pry
         tags_array = arrayify_string(short_word_object.tags)
         # switch word - check if multiple parts of speech
         if tags_array.length <= 1
@@ -75,17 +73,21 @@ def lengthen_essay(words_array)
           end
         else
           # multiple parts of speech
-          # binding.pry
           puts "Which of the following describes '#{word}': #{tags_array.join(", ")}?"
           part_of_speech = get_text
           matching_pos_list = wordlinks_list.select do |word_link_object|
             # find words whose part of speech matches
             word_link_object.long_word.tags.include? part_of_speech
           end
-          if cap?(word)
-            cap(matching_pos_list.sample.long_word.word)
+          if matching_pos_list.empty?
+            unlengthened_words << word
+            word
           else
-            matching_pos_list.sample.long_word.word
+            if cap?(word)
+              cap(matching_pos_list.sample.long_word.word)
+            else
+              matching_pos_list.sample.long_word.word
+            end
           end
         end
       end
@@ -98,16 +100,75 @@ def lengthen_essay(words_array)
   #
 
   new_text = new_words_array.join
-  binding.pry
   puts new_text
   if !unlengthened_words.empty?
+    unlengthened_words_cleaned = unlengthened_words.select { |w| /[A-Za-z]+/.match(w) }
     puts "We were unable to lengthen the following words:"
-    puts unlengthened_words.join(", ")
+    puts unlengthened_words_cleaned.join(", ")
   end
 end
 
 # write shorten essay dfn!!!
 
+
+def shorten_essay(words_array)
+  unshortened_words = []
+
+  new_words_array = words_array.map do |word|
+    if !short_string?(word)
+      # do something
+      long_word_object = LongWord.find_by(word: word.downcase)
+      wordlinks_list = WordLink.where(long_word: long_word_object, link_type: "synonym")
+      if wordlinks_list.empty?
+        unshortened_words << word
+        # do not switch word
+        word
+      else
+        tags_array = arrayify_string(long_word_object.tags)
+        # switch word - check if multiple parts of speech
+        if tags_array.length <= 1
+          # only one part of speech
+          if cap?(word)
+            cap(wordlinks_list.sample.short_word.word)
+          else
+            wordlinks_list.sample.short_word.word
+          end
+        else
+          # multiple parts of speech
+          puts "Which of the following describes '#{word}': #{tags_array.join(", ")}?"
+          part_of_speech = get_text
+          matching_pos_list = wordlinks_list.select do |word_link_object|
+            # find words whose part of speech matches
+            word_link_object.short_word.tags.include? part_of_speech
+          end
+          if matching_pos_list.empty?
+            unshortened_words << word
+            word
+          else
+            if cap?(word)
+              cap(matching_pos_list.sample.short_word.word)
+            else
+              matching_pos_list.sample.short_word.word
+            end
+          end
+        end
+      end
+    else
+      word
+    end
+  end
+
+  # new_words_array_cleaned = new_words_array.delete_if { |word| word == "" || word == " " }
+  #
+
+  new_text = new_words_array.join
+  puts new_text
+  if !unshortened_words.empty?
+    unshortened_words_cleaned = unshortened_words.select { |w| /[A-Za-z]+/.match(w) }
+    puts "We were unable to shorten the following words:"
+    puts unshortened_words_cleaned.join(", ")
+  end
+end
 
 
 def arrayify_string(string)
