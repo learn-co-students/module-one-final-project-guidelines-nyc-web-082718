@@ -5,6 +5,7 @@ require_all 'app'
 def introduce_user
   puts "Welcome to our world! What is your character's name?"
   name = gets.chomp
+  sleep(0.5)
   character = Character.new_character(name)
   character.update(health: character.create_health)
   Environment.create_environments(character.id)
@@ -99,22 +100,10 @@ def where_am_i(current_location)
   end
 end
 
-def dead_character
-  if Character.first.health == 0
-    puts "Your health stat has decreased to 0. You are now dead. Thanks for playing!"
-    break
-  end
-end
-
-
-def quit_game
-  puts "Thanks for playing!"
-end
-
-def run(current_location)
-  help
-
-  interval 60 do
+def decrease_stats
+  array = [false, false, false, false, false, false, false, false, false, false, true]
+  array.sample
+  if array.sample == true
     if Character.first.thirst > 0
       Character.first.decrement!(:thirst, 1)
     end
@@ -124,15 +113,28 @@ def run(current_location)
     if Character.first.sleep > 0
       Character.first.decrement!(:sleep, 1)
     end
-    puts "It has been a minute. Your thirst, hunger, and sleep stats have decreased by 1."
+    puts "Oh no! Bad luck! Your thirst, hunger, and sleep stats have decreased by 1!"
   end
+  Character.first.update(health: Character.first.create_health)
+end
 
-  dead_character
-  
+
+def quit_game
+  puts "Thanks for playing!"
+  sleep(0.7)
+end
+
+def run(current_location)
+  help
+
+  unless Character.first.health > 0
+    abort("Your character has died. Thanks for playing!")
+  end
   command = ""
   while command
     puts "What would you like to do?"
     command = gets.chomp
+    decrease_stats
     case command
       when "my stats"
         Character.first.my_stats
@@ -141,6 +143,7 @@ def run(current_location)
       when "explore"
         where_to_explore
         explore_command = gets.chomp
+        decrease_stats
           if explore_command == "Forest"
             current_location = Environment.all.where(id: 2)
             puts "You are now in the forest."
@@ -157,6 +160,7 @@ def run(current_location)
       when "build shelter"
         shelter_materials
         shelter_command = gets.chomp
+        decrease_stats
         Character.first.build_shelter(shelter_command, current_location)
       when "my shelters"
         Character.first.view_my_shelters
@@ -169,6 +173,7 @@ def run(current_location)
       when "collect"
         what_to_collect
         collect_command = gets.chomp
+        decrease_stats
         if collect_command == "wood"
           i_want_wood(current_location)
         elsif collect_command == "sand"
@@ -181,6 +186,7 @@ def run(current_location)
       when "forage"
         what_to_forage
         forage_command = gets.chomp
+        decrease_stats
         Character.first.forage_for_food(forage_command, current_location)
       when "my inventory"
         Character.first.current_inventory
