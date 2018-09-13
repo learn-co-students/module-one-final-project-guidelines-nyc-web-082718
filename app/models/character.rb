@@ -15,14 +15,14 @@ class Character < ActiveRecord::Base
 
   def my_stats
     puts "Current Character Stats:"
-    puts "Health: #{self.create_health}"
+    puts "Health: #{self.health}"
     puts "Thirst: #{self.thirst}"
     puts "Hunger: #{self.hunger}"
     puts "Sleep: #{self.sleep}"
   end
 
-  def collect_wood(current_location, forest)
-    if current_location == forest
+  def collect_wood(current_location)
+    if current_location[0].resource == "wood"
       puts "Collecting wood..."
       object = self.inventories.where(name: "wood")
       object[0].increment!(:amount, 5)
@@ -31,8 +31,8 @@ class Character < ActiveRecord::Base
     end
   end
 
-  def collect_sand(current_location, desert)
-    if current_location == desert
+  def collect_sand(current_location)
+    if current_location[0].resource == "sand"
       puts "Collecting sand..."
       object = self.inventories.where(name: "sand")
       object[0].increment!(:amount, 5)
@@ -41,8 +41,8 @@ class Character < ActiveRecord::Base
     end
   end
 
-  def collect_water(current_location, forest, lake)
-    if current_location == forest || lake
+  def collect_water(current_location)
+    if current_location[0].water == true
       puts "Collecting water..."
       object = self.inventories.where(name: "water")
       object[0].increment!(:amount, 5)
@@ -51,8 +51,8 @@ class Character < ActiveRecord::Base
     end
   end
 
-  def collect_stone(current_location, cave)
-    if current_location == cave
+  def collect_stone(current_location)
+    if current_location[0].resource == "stone"
       puts "Collecting stone..."
       object = self.inventories.where(name: "stone")
       object[0].increment!(:amount, 5)
@@ -94,6 +94,7 @@ class Character < ActiveRecord::Base
     else
       puts "You must collect more water in order to drink!"
     end
+    self.update(health: self.create_health)
   end
 
   def build_shelter(shelter_command, current_location)
@@ -137,7 +138,8 @@ class Character < ActiveRecord::Base
   end
 
   def go_to_sleep(current_location)
-    if current_location[0].shelters.empty? == false
+    if current_location[0].shelters.count > 0
+      puts "sleeping..."
       if self.sleep < 10
         self.increment!(:sleep, 1)
         "Your sleep stat is now at #{self.sleep}."
@@ -145,10 +147,10 @@ class Character < ActiveRecord::Base
         self.sleep = 10
         "Your sleep stat is already maxed out."
       end
-      puts "sleeping..."
     else
       puts "You must build a shelter in this location before you can rest."
     end
+    self.update(health: self.create_health)
   end
 
 

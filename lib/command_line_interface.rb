@@ -64,8 +64,8 @@ def i_want_sand(current_location, desert)
   Character.first.collect_sand(current_location, desert)
 end
 
-def i_want_water(current_location, forest, lake)
-  Character.first.collect_water(current_location, forest, lake)
+def i_want_water(current_location)
+  Character.first.collect_water(current_location)
 end
 
 def i_want_stone(current_location, cave)
@@ -103,7 +103,7 @@ def run(current_location, starter_area, forest, desert, lake, cave)
       when "my stats"
         Character.first.my_stats
       when "current location"
-        where_am_i(current_location, starter_area, forest, desert, lake, cave)
+        where_am_i(current_location)
       when "explore"
         where_to_explore
         explore_command = gets.chomp
@@ -131,7 +131,7 @@ def run(current_location, starter_area, forest, desert, lake, cave)
       when "drink"
         Character.first.drink_water
       when "sleep"
-        puts "sleeping..."
+        Character.first.go_to_sleep(current_location)
       when "collect"
         what_to_collect
         collect_command = gets.chomp
@@ -140,7 +140,7 @@ def run(current_location, starter_area, forest, desert, lake, cave)
         elsif collect_command == "sand"
           i_want_sand(current_location, desert)
         elsif collect_command == "water"
-          i_want_water(current_location, forest, lake)
+          i_want_water(current_location)
         elsif collect_command == "stone"
           i_want_stone(current_location, cave)
         end
@@ -155,4 +155,4 @@ def run(current_location, starter_area, forest, desert, lake, cave)
     end
 end
 
-binding.pry
+#binding.pry
