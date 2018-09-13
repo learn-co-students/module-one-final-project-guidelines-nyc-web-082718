@@ -223,5 +223,5 @@ def match_loop(array)
       end
     end #End while loop aka. Each individual fight
     # array logic
-  puts "\n" "Congratulations to the new UFC Champion of the world! #{Player.last.name}!!!" "\n" "**************************************"
+  puts "\n" "Congratulations to the new UFC Champion of the world! #{Player.last.name}!!!" "\n" "\n" "**************************************" "\n" "\n" 
 end
