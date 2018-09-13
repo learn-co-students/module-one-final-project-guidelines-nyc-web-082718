@@ -4,7 +4,7 @@ def welcome
 end
 
 def essay_or_rhyme
-  puts "Would you like to edit an essay or spit some rhymes? (Type e or r)"
+  puts "Would you like to edit an ESSAY or spit some RHYMES? (Type e or r)"
   if get_text == "e"
     run_essay_editor
   elsif get_text == "r"
@@ -37,19 +37,27 @@ def run_essay_editor
 end
 
 def lengthen_or_shorten(words_array)
-  puts "Would you like to lengthen or shorten your essay? (Type l or s)"
+  puts "Would you like to LENGTHEN or SHORTEN your essay? (Type l or s)"
   length_option = get_text
-  if length_option == "l"
-    lengthen_essay(words_array)
-  elsif length_option == "s"
-    shorten_essay(words_array)
+
+  puts "Would you like to CHOOSE each replacement word or have it chosen RANDOMLY? (Type c or r)"
+  rand_option = get_text
+
+  if length_option == "l" && rand_option == "c"
+    choose_lengthen_essay(words_array)
+  elsif length_option == "l" && rand_option == "r"
+    rand_lengthen_essay(words_array)
+  elsif length_option == "s" && rand_option == "c"
+    choose_shorten_essay(words_array)
+  elsif length_option == "s" && rand_option == "r"
+    rand_shorten_essay(words_array)
   else
     puts "Invalid input!"
     lengthen_or_shorten(words_array)
   end
 end
 
-def lengthen_essay(words_array)
+def rand_lengthen_essay(words_array)
   unlengthened_words = []
 
   new_words_array = words_array.map do |word|
@@ -67,8 +75,12 @@ def lengthen_essay(words_array)
         if tags_array.length <= 1
           # only one part of speech
           if cap?(word)
+### change word
+
             cap(wordlinks_list.sample.long_word.word)
           else
+### change word
+
             wordlinks_list.sample.long_word.word
           end
         else
@@ -83,9 +95,13 @@ def lengthen_essay(words_array)
             unlengthened_words << word
             word
           else
+### change word
+
             if cap?(word)
               cap(matching_pos_list.sample.long_word.word)
             else
+  ### change word
+
               matching_pos_list.sample.long_word.word
             end
           end
@@ -108,10 +124,90 @@ def lengthen_essay(words_array)
   end
 end
 
-# write shorten essay dfn!!!
+
+def choose_lengthen_essay(words_array)
+  unlengthened_words = []
+
+  new_words_array = words_array.map do |word|
+    if short_string?(word)
+      # do something
+      short_word_object = ShortWord.find_by(word: word.downcase)
+      wordlinks_list = WordLink.where(short_word: short_word_object, link_type: "synonym")
+      if wordlinks_list.empty?
+        unlengthened_words << word
+        # do not switch word
+        word
+      else
+        tags_array = arrayify_string(short_word_object.tags)
+        # switch word - check if multiple parts of speech
+        if tags_array.length <= 1
+          # only one part of speech
+          if cap?(word)
+### change word
+            puts "Choose a word to replace #{word}:"
+            wordlinks_list.each_with_index do |wl, i|
+              puts "#{i+1}) #{wl.long_word.word}"
+            end # end wordlinks_list.each_with_index do |wl, i|
+            choice = get_text.to_i - 1
+            cap(wordlinks_list[choice].long_word.word)
+          else
+### change word
+            puts "Choose a word to replace #{word}:"
+            wordlinks_list.each_with_index do |wl, i|
+              puts "#{i+1}) #{wl.long_word.word}"
+            end # end wordlinks_list.each_with_index do |wl, i|
+            choice = get_text.to_i - 1
+            wordlinks_list[choice].long_word.word
+          end # if cap?(word)
+        else
+          # multiple parts of speech
+          puts "Which of the following describes '#{word}': #{tags_array.join(", ")}?"
+          part_of_speech = get_text
+          matching_pos_list = wordlinks_list.select do |word_link_object|
+            # find words whose part of speech matches
+            word_link_object.long_word.tags.include? part_of_speech
+          end # end matching_pos_list = wordlinks_list.select do
+          if matching_pos_list.empty?
+            unlengthened_words << word
+            word
+          else
+            if cap?(word)
+  ### change word
+              puts "Choose a word to replace #{word}:"
+              matching_pos_list.each_with_index do |wl, i|
+                puts "#{i+1}) #{wl.long_word.word}"
+              end # matching_pos_list.each_with_index do |wl, i|
+              choice = get_text.to_i - 1
+              cap(matching_pos_list[choice].long_word.word)
+            else
+  ### change word
+              puts "Choose a word to replace #{word}:"
+              matching_pos_list.each_with_index do |wl, i|
+                puts "#{i+1}) #{wl.long_word.word}"
+              end #
+              choice = get_text.to_i - 1
+              matching_pos_list[choice].long_word.word
+            end # if cap?(word)
+          end # if matching_pos_list.empty?
+        end # end if tags_array.length <= 1
+      end # end if wordlinks_list.empty?
+    else
+      word
+    end # end if short_string?(word)
+  end # end new_words_array = words_array.map do |word|
+
+  new_text = new_words_array.join
+  puts new_text
+  if !unlengthened_words.empty?
+    unlengthened_words_cleaned = unlengthened_words.select { |w| /[A-Za-z]+/.match(w) }
+    puts "We were unable to lengthen the following words:"
+    puts unlengthened_words_cleaned.join(", ")
+  end # end if !unlengthened_words.empty?
+end # end choose_lengthen_essay method
 
 
-def shorten_essay(words_array)
+
+def rand_shorten_essay(words_array)
   unshortened_words = []
 
   new_words_array = words_array.map do |word|
@@ -129,8 +225,12 @@ def shorten_essay(words_array)
         if tags_array.length <= 1
           # only one part of speech
           if cap?(word)
+### change word
+
             cap(wordlinks_list.sample.short_word.word)
           else
+### change word
+
             wordlinks_list.sample.short_word.word
           end
         else
@@ -146,8 +246,12 @@ def shorten_essay(words_array)
             word
           else
             if cap?(word)
+  ### change word
+
               cap(matching_pos_list.sample.short_word.word)
             else
+  ### change word
+
               matching_pos_list.sample.short_word.word
             end
           end
@@ -158,8 +262,87 @@ def shorten_essay(words_array)
     end
   end
 
-  # new_words_array_cleaned = new_words_array.delete_if { |word| word == "" || word == " " }
-  #
+  new_text = new_words_array.join
+  puts new_text
+  if !unshortened_words.empty?
+    unshortened_words_cleaned = unshortened_words.select { |w| /[A-Za-z]+/.match(w) }
+    puts "We were unable to shorten the following words:"
+    puts unshortened_words_cleaned.join(", ")
+  end
+end
+
+
+def choose_shorten_essay(words_array)
+  unshortened_words = []
+
+  new_words_array = words_array.map do |word|
+    if !short_string?(word)
+      # do something
+      long_word_object = LongWord.find_by(word: word.downcase)
+      wordlinks_list = WordLink.where(long_word: long_word_object, link_type: "synonym")
+      if wordlinks_list.empty?
+        unshortened_words << word
+        # do not switch word
+        word
+      else
+        tags_array = arrayify_string(long_word_object.tags)
+        # switch word - check if multiple parts of speech
+        if tags_array.length <= 1
+          # only one part of speech
+          if cap?(word)
+### change word
+            puts "Choose a word to replace #{word}:"
+            wordlinks_list.each_with_index do |wl, i|
+              puts "#{i+1}) #{wl.short_word.word}"
+            end
+            choice = get_text.to_i - 1
+            cap(wordlinks_list[choice].short_word.word)
+          else
+### change word
+            puts "Choose a word to replace #{word}:"
+            wordlinks_list.each_with_index do |wl, i|
+              puts "#{i+1}) #{wl.short_word.word}"
+            end
+            choice = get_text.to_i - 1
+            wordlinks_list[choice].short_word.word
+          end
+        else
+          # multiple parts of speech
+          puts "Which of the following describes '#{word}': #{tags_array.join(", ")}?"
+          part_of_speech = get_text
+          matching_pos_list = wordlinks_list.select do |word_link_object|
+            # find words whose part of speech matches
+            word_link_object.short_word.tags.include? part_of_speech
+          end
+          if matching_pos_list.empty?
+            unshortened_words << word
+            word
+          else
+            if cap?(word)
+  ### change word
+              puts "Choose a word to replace #{word}:"
+              matching_pos_list.each_with_index do |wl, i|
+                puts "#{i+1}) #{wl.short_word.word}"
+              end
+              choice = get_text.to_i - 1
+              cap(matching_pos_list[choice].short_word.word)
+            else
+  ### change word
+              puts "Choose a word to replace #{word}:"
+              matching_pos_list.each_with_index do |wl, i|
+                puts "#{i+1}) #{wl.short_word.word}"
+              end
+              choice = get_text.to_i - 1
+              matching_pos_list[choice].short_word.word
+            end
+          end
+        end
+      end
+    else
+      word
+    end
+  end
+
 
   new_text = new_words_array.join
   puts new_text
