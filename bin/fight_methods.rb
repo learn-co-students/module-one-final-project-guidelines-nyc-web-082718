@@ -2,17 +2,7 @@
 
 
 
-  def fighter_generator
-    opponents = []
-    5.times do
-      fighter = Fighter.fighter_select
-      opponents << fighter
-    end
-    1.times do
-      opponents << Fighter.champ_select
-    end
-    opponents
-  end
+
 
 
 
