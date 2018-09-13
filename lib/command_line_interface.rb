@@ -77,16 +77,117 @@ def complete_player_creation(formatted_name, formatted_nickname, gender, weight_
   end
   formatted_weight_class = format_weight_class.join(" ")
 
-  Player.create(name: full_name, gender: gender, weightclass: weight_class)
+  Player.create(name: full_name, gender: gender, weightclass: weight_class, wins: 0, losses: 0)
 
   puts "\n""It's time!!! #{full_name} enters the UFC as a promising rookie #{formatted_weight_class}!"
 end
 
-def first_match_announcement(fighter_name)
-  puts "You've been matched against #{fighter_name}"
-  puts "Ladies and Gentlemen!"
-  puts "#{Player.last.name} vs. #{fighter_name}!"
+def match_announcement(fighter_name)
+  puts "\n""You've been matched against #{fighter_name}"
+  sleep 1
+  puts "\n""Ladies and Gentlemen! #{Player.last.name} vs. #{fighter_name}!"
+  sleep 1
+  puts "3"
+  sleep 1
+  puts "2"
+  sleep 1
+  puts "1"
+  sleep 1
+  puts "Fight!"
+  sleep 1
+end
+
+def championship_announcement(fighter_name)
+  puts "\n""You've been matched against the reigning champion of the world #{fighter_name}!!"
+  sleep 1
+  puts "\n""Ladies and Gentlemen! #{Player.last.name} vs. #{fighter_name}!"
+  sleep 1
+  puts "3"
+  sleep 1
+  puts "2"
+  sleep 1
+  puts "1"
+  sleep 1
+  puts "Fight!"
+  sleep 1
+end
+
+def moves
+  puts "Press a number to go for a move"
+  puts "1. Punch"
+  puts "2. Kick"
+  puts "3. Takedown"
+  action = gets.chomp.to_i
+  action
 end
 
 
-# binding.pry
+
+
+def match_loop(array)
+  x = 0
+  punch_win = ["Nice punch, one more of those and they'll go down!", "Good contact, next one should knock em out"]
+  punch_loss = ["I can't believe they blocked that!", "They slipped and countered, be more careful!"]
+  kick_win = ["That knee is looking wobbly, throw another kick!"]
+  kick_loss =["Throw your hips into it! Your not kicking hard enough!", "They shielded and countered, be more careful!"]
+  takedown_win =["Nice takedown, go for the arm bar!", " Nice takedown! That'll score with the judges!"]
+  takedown_loss =["I can't believe they blocked that!", "They slipped and countered, be more careful!"]
+
+  while x < 6
+    Fight.create(user_id: Player.last.id, fighter_id: array[x].id)
+      player_damage = 0
+      computer_damage = 0
+       x == 5 ? championship_announcement(array[x].name) :  match_announcement(array[x].name)
+
+
+      while player_damage < 3 && computer_damage < 3
+        puts "\n"
+        user_action = moves
+        com_action = rand(3)
+        puts "\n"
+        if user_action == 1
+          if com_action == 1 || 2
+            puts punch_win.sample
+            computer_damage += 1
+          else
+            puts punch_loss.sample
+            player_damage += 1
+          end
+        elsif user_action == 2
+          if com_action == 2 || 1
+            puts kick_win.sample
+            computer_damage += 1
+          else
+            puts kick_loss.sample
+            player_damage += 1
+          end
+        else
+          if com_action == 1
+            puts takedown_win.sample
+            computer_damage += 1
+          else com_action == 2 ||3
+            puts takedown_loss.sample
+            player_damage += 1
+          end
+        end
+      end
+
+      if player_damage == 3
+        puts "\n" "That was a tough fight, are you feeling okay? Better luck next time."
+        losses = Player.last.losses
+        Player.last.update_column(:losses, losses + 1)
+        sleep 2
+        x += 1
+      elsif computer_damage == 3
+        puts "\n" "Congratulations! You defeated #{array[x].name}"
+        wins = Player.last.wins
+        Player.last.update_column(:wins, wins + 1)
+        sleep 2
+        x += 1
+      else
+        puts "something is wrong"
+      end
+    end #End while loop aka. Each individual fight
+    # array logic
+  puts "\n" "Congratulations to the new UFC Champion of the world! #{Player.last.name}!!!!!!!!!" "\n" "**********************************************************"
+end

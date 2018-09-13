@@ -9,6 +9,12 @@ def get_fighters_from_api
   response_hash
 end
 
+
+def match_announcement()
+  puts ""
+end
+
+
 # def sort_fighters_by_weight_class(weight_class)
 #   fighters_sorted_by_weight_class = get_fighters_from_api.select do |dataset|
 #     dataset['weight_class'] == weight_class
