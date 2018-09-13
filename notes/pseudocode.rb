@@ -2,98 +2,114 @@
 #   gets.chomp
 #   # => "bad man"
 # end
-
+#
 # def split_into_words_array(get_text)
 #   # => ["bad", "man"]
 # end
+#
+# def add_words_from_array_to_db(words_array)
+#   words_array.each do |word_string|
+#     add_word_and_related_words_to_db(word_string)
+#   end
+# end
+#
+# #### RUN METHOD ###
+#
+# def add_word_and_related_words_to_db(word_string)
+#
+#   original_word = add_word_to_db(word_string)       #part 1
+#   new_word = add_related_words_to_db(word_string)   #part 2
+#   # make wordlink if orig/new are diff            #part 3
+#
+# end
+#
+#
+# #### PART 1 ####
+#
+# def add_word_to_db(word_string)
+#   word_hash = get_info_hash(word_string)
+#   if short?(word_hash)
+#     word = ShortWord.create(word_hash)
+#   else
+#     word = LongWord.create(word_hash)
+#   end
+#   word
+# end
+#
+#     ## Part 1 - Child Methods ##
+#
+#     def get_info_hash(word_string)
+#       sl_array = query("info", word_string)
+#       word_hash = sl_array[0]
+#       turn_original_hash_into_info_hash(word_hash)
+#     end
+#
+#   #### PART 2 ####
+#
+#   def add_related_words_to_db(word_string)
+#     query_types = ["synonym", "antonym", "rhyme"]
+#     related_words_hash = {}
+#
+#     query_types.each do |type|
+#       word_objects_array = query(type, word_string)
+#       related_words_hash[type] = word_objects_array
+#     end
+#
+#     # related_words_hash will look like:
+#         # {"synonym": [{w}{w}{w}...],
+#         # "antonym": [{word}{word}...],
+#         # "rhyme": [{word}{word}...]}
+#
+#     related_words_hash.each do |type, word_objects_array|
+#       # word_objects_array looks like:
+#           # [{word}{word}...]
+#       word_objects_array.each do |word_object|
+#         # word_object looks like:
+#         # { word: "sad", score: 3, numSyllables: 1,.....}
+#         info_hash = turn_original_hash_into_info_hash(word_object)
+#           # info_hash looks like:
+#           # { word: "sad", numSyllables: 1,.....}
+#         add_word_to_db(info)
+#       end
+#   end
+#
+#     ## Part 2 - Child Methods ##
+#
+#     def query(query_type, input)
+#       param = case query_type
+#       when "info"
+#         "sl"
+#       when "synonym"
+#         "rel_syn"
+#       when "antonym"
+#         "rel_ant"
+#       when "rhyme"
+#         "rel_rhy"
+#       end
+#
+#       url = "https://api.datamuse.com/words?#{param}=#{input}&md=spd"
+#       words_array = get_words_from_api(url)
+#     end
+#
+#     def turn_original_hash_into_info_hash(word_hash)
+#       word_hash.delete("score")
+#       word_hash["length"] = word_hash["word"].length
+#       word_hash
+#     end
 
-def add_words_from_array_to_db(words_array)
-  words_array.each do |word_string|
-    add_word_and_related_words_to_db(word_string)
-  end
-end
 
-#### RUN METHOD ###
+# 
+# def short?(word_hash)
+#   word_hash["length"] < 6
+# end
+#
 
-def add_word_and_related_words_to_db(word_string)
+###############################
+# already added ^^
+################################
 
-  original_word = add_word_to_db(word_string) #part 1
-  new_word = add_related_words_to_db(word_string)  #part 2
-  # make wordlink if orig/new are diff #part 3
-end
 
-#### PART 1 ####
 
-def add_word_to_db(word_string)
-  word_hash = get_info_hash(word_string)
-  if short?(word_hash)
-    word = ShortWord.create(word_hash)
-  else
-    word = LongWord.create(word_hash)
-  end
-  word
-end
-
-    ## Part 1 - Child Methods ##
-
-    def get_info_hash(word_string)
-      sl_array = query("info", word_string)
-      word_hash = sl_array[0]
-      turn_original_hash_into_info_hash(word_hash)
-    end
-
-  #### PART 2 ####
-
-  def add_related_words_to_db(word_string)
-    query_types = ["synonym", "antonym", "rhyme"]
-    related_words_hash = {}
-
-    query_types.each do |type|
-      word_objects_array = query(type, word_string)
-      related_words_hash[type] = word_objects_array
-    end
-
-    # related_words_hash will look like:
-        # {"synonym": [{w}{w}{w}...],
-        # "antonym": [{word}{word}...],
-        # "rhyme": [{word}{word}...]}
-
-    related_words_hash.each do |type, word_objects_array|
-      # word_objects_array looks like:
-          # [{word}{word}...]
-      word_objects_array.each do |word_object|
-        # word_object looks like:
-        # { word: "sad", score: 3, numSyllables: 1,.....}
-        info_hash = turn_original_hash_into_info_hash(word_object)
-          # info_hash looks like:
-          # { word: "sad", numSyllables: 1,.....}
-        add_word_to_db(info)
-      end
-  end
-
-    ## Part 2 - Child Methods ##
-
-    def query(query_type, input)
-      param = case query_type
-      when "info"
-        "sl"
-      when "synonym"
-        "rel_syn"
-      when "antonym"
-        "rel_ant"
-      when "rhyme"
-        "rel_rhy"
-      end
-
-      url = "https://api.datamuse.com/words?#{param}=#{input}&md=spd"
-      words_array = get_words_from_api(url)
-    end
-
-    def turn_original_hash_into_info_hash(word_hash)
-      word_hash.delete("score")
-      word_hash["length"] = word_hash["word"].length
-      word_hash
-    end
 
 def get_related_word_info_hash(related_word_object)
   word_hash = related_word_object
@@ -106,9 +122,6 @@ def turn_original_hash_into_info_hash(word_hash)
   word_hash
 end
 
-def short?(word_hash)
-  word_hash["length"] < 6
-end
 
 def length_of_object(word_object)
   if word_object.class == ShortWord

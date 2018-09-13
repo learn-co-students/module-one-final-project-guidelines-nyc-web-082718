@@ -3,7 +3,8 @@ class CreateLongWords < ActiveRecord::Migration[5.0]
     create_table :long_words do |t|
       t.string :word
       t.integer :length
-      t.integer :syllables
+      t.string :tags
+      t.integer :numSyllables
     end
   end
 end
