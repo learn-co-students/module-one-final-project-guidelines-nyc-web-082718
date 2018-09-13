@@ -71,7 +71,7 @@ class Character < ActiveRecord::Base
     stone_object = self.inventories.where(name: "stone")
     stone_count = stone_object[0].amount
     food_object = self.inventories.where(name: "food")
-    food_count = food_object(0).amount
+    food_count = food_object[0].amount
     puts "You currently have the following resources:"
     puts "#{wood_count} wood"
     puts "#{sand_count} sand"
@@ -88,10 +88,10 @@ class Character < ActiveRecord::Base
       puts "drinking water..."
       if self.thirst < 10
         self.increment!(:thirst, 1)
-        "Your thirst stat is now at #{self.thirst}."
+        puts "Your thirst stat is now at #{self.thirst}."
       else
         self.thirst = 10
-        "Your thirst stat is already maxed out."
+        puts "Your thirst stat is already maxed out."
       end
       puts "You now have #{object[0].amount} water."
     else
@@ -145,10 +145,10 @@ class Character < ActiveRecord::Base
       puts "sleeping..."
       if self.sleep < 10
         self.increment!(:sleep, 1)
-        "Your sleep stat is now at #{self.sleep}."
+        puts "Your sleep stat is now at #{self.sleep}."
       else
         self.sleep = 10
-        "Your sleep stat is already maxed out."
+        puts "Your sleep stat is already maxed out."
       end
     else
       puts "You must build a shelter in this location before you can rest."
@@ -193,7 +193,23 @@ class Character < ActiveRecord::Base
   end
 
   def eat_food
-
+    object = self.inventories.where(name: "food")
+    object_count = object[0].amount
+    if object_count > 0
+      object[0].decrement!(:amount, 1)
+      puts "eating food..."
+      if self.hunger < 10
+        self.increment!(:hunger, 1)
+        puts "Your hunger stat is now at #{self.hunger}."
+      else
+        self.hunger = 10
+        puts "Your hunger stat is already maxed out."
+      end
+      puts "You now have #{object[0].amount} food."
+    else
+      puts "You must look for more food in order to eat!"
+    end
+    self.update(health: self.create_health)
   end
 
 end

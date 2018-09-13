@@ -12,6 +12,14 @@ def introduce_user
   puts "Hello #{name}! What would you like to do?"
 end
 
+def interval seconds
+  loop do
+    yield
+    sleep seconds
+    break if Chracter.first.health == 0
+  end
+end
+
 
 # Character.first.health = Character.first.thirst + Character.first.hunger + Character.first.sleep
 character = Character.first
@@ -40,6 +48,7 @@ def help
   puts "- drink: allows you to drink water and increases your thirst stat"
   puts "- sleep: allows you to sleep and increases your sleep stat"
   puts "- collect: allows you to collect a resource and adds it to your inventory"
+  puts "- forage: allows you to forage for food and adds it to your inventory"
   puts "- my inventory: allows you to view your inventory"
   puts "- quit: quits this program"
 end
@@ -56,20 +65,24 @@ def shelter_materials
   puts "What would you like to make your shelter out of? You can choose between: wood, stone"
 end
 
-def i_want_wood(current_location, forest)
-  Character.first.collect_wood(current_location, forest)
+def what_to_forage
+  puts "What food would you like to forage for? You can choose between: berries, scorpions, fish, squirrels"
 end
 
-def i_want_sand(current_location, desert)
-  Character.first.collect_sand(current_location, desert)
+def i_want_wood(current_location)
+  Character.first.collect_wood(current_location)
+end
+
+def i_want_sand(current_location)
+  Character.first.collect_sand(current_location)
 end
 
 def i_want_water(current_location)
   Character.first.collect_water(current_location)
 end
 
-def i_want_stone(current_location, cave)
-  Character.first.collect_stone(current_location, cave)
+def i_want_stone(current_location)
+  Character.first.collect_stone(current_location)
 end
 
 def where_am_i(current_location)
@@ -86,15 +99,36 @@ def where_am_i(current_location)
   end
 end
 
+def dead_character
+  if Character.first.health == 0
+    puts "Your health stat has decreased to 0. You are now dead. Thanks for playing!"
+    break
+  end
+end
+
 
 def quit_game
   puts "Thanks for playing!"
 end
 
-def run(current_location, starter_area, forest, desert, lake, cave)
-  # Character.first.health = Character.first.thirst + Character.first.hunger + Character.first.sleep
+def run(current_location)
   help
 
+  interval 60 do
+    if Character.first.thirst > 0
+      Character.first.decrement!(:thirst, 1)
+    end
+    if Character.first.hunger > 0
+      Character.first.decrement!(:hunger, 1)
+    end
+    if Character.first.sleep > 0
+      Character.first.decrement!(:sleep, 1)
+    end
+    puts "It has been a minute. Your thirst, hunger, and sleep stats have decreased by 1."
+  end
+
+  dead_character
+  
   command = ""
   while command
     puts "What would you like to do?"
@@ -108,16 +142,16 @@ def run(current_location, starter_area, forest, desert, lake, cave)
         where_to_explore
         explore_command = gets.chomp
           if explore_command == "Forest"
-            current_location = forest
+            current_location = Environment.all.where(id: 2)
             puts "You are now in the forest."
           elsif explore_command == "Desert"
-            current_location = desert
+            current_location = Environment.all.where(id: 3)
             puts "You are now in the desert."
           elsif explore_command == "Lake"
-            current_location = lake
+            current_location = Environment.all.where(id: 4)
             puts "You are now by the lake."
           elsif explore_command == "Cave"
-            current_location = cave
+            current_location = Environment.all.where(id: 5)
             puts "You are now in the cave."
           end
       when "build shelter"
@@ -127,7 +161,7 @@ def run(current_location, starter_area, forest, desert, lake, cave)
       when "my shelters"
         Character.first.view_my_shelters
       when "eat"
-        puts "eating..."
+        Character.first.eat_food
       when "drink"
         Character.first.drink_water
       when "sleep"
@@ -136,14 +170,18 @@ def run(current_location, starter_area, forest, desert, lake, cave)
         what_to_collect
         collect_command = gets.chomp
         if collect_command == "wood"
-          i_want_wood(current_location, forest)
+          i_want_wood(current_location)
         elsif collect_command == "sand"
-          i_want_sand(current_location, desert)
+          i_want_sand(current_location)
         elsif collect_command == "water"
           i_want_water(current_location)
         elsif collect_command == "stone"
-          i_want_stone(current_location, cave)
+          i_want_stone(current_location)
         end
+      when "forage"
+        what_to_forage
+        forage_command = gets.chomp
+        Character.first.forage_for_food(forage_command, current_location)
       when "my inventory"
         Character.first.current_inventory
       when "quit"
@@ -155,4 +193,4 @@ def run(current_location, starter_area, forest, desert, lake, cave)
     end
 end
 
-#binding.pry
+binding.pry
