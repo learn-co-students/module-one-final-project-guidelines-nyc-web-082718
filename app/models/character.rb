@@ -297,6 +297,7 @@ class Character < ActiveRecord::Base
     object_count = object[0].amount
     if object_count > 0
       object[0].decrement!(:amount, 1)
+      puts "\n"
       puts "eating food..."
       sleep(1.0)
       puts "\n"
@@ -323,28 +324,31 @@ class Character < ActiveRecord::Base
   end
 
   def decrease_stats
-    array = [false, false, false, false, false, false, false, false, false, false, true]
+    array = [false, false, false, false, false, false, false, false, true]
     array.sample
     if array.sample == true
-      if self.thirst > 1
-        self.decrement!(:thirst, 2)
+      if self.thirst > 0
+        self.decrement!(:thirst, 1)
         if self.thirst == 2
+          puts "\n"
           puts "Warning! Your thirst stat is down to 2! You must drink more water!".colorize(:yellow).blink
           sleep (0.7)
           puts "\n"
         end
       end
-      if self.hunger > 1
-        self.decrement!(:hunger, 2)
+      if self.hunger > 0
+        self.decrement!(:hunger, 1)
         if self.hunger == 2
+          puts "\n"
           puts "Warning! Your hunger stat is down to 2! You must eat something!".colorize(:yellow).blink
           sleep(0.7)
           puts "\n"
         end
       end
-      if self.sleep_stat > 1
-        self.decrement!(:sleep_stat, 2)
+      if self.sleep_stat > 0
+        self.decrement!(:sleep_stat, 1)
         if self.sleep_stat == 2
+          puts "\n"
           puts "Warning! Your sleep stat is down to 2! You must get some rest!".colorize(:yellow).blink
           sleep(0.7)
           puts "\n"
@@ -352,7 +356,6 @@ class Character < ActiveRecord::Base
       end
       puts "Oh no! Bad luck! Your thirst, hunger, and sleep stats have decreased!".colorize(:light_red)
       sleep(0.7)
-      puts "\n"
     end
     self.update(health: self.create_health)
   end
