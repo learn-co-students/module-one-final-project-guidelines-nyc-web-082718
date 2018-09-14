@@ -10,10 +10,10 @@ end
 
 #### RUN METHOD ###
 def add_word_and_related_words_to_db(word_string)
-# part 1 ################################################
+  # part 1 ################################################
   original_word_hash = get_info_hash(word_string)
   original_word = find_or_add_word_to_db(original_word_hash)
-# part 2 ################################################
+  # part 2 ################################################
   add_related_words_to_db(word_string)   #part 2
 end
 
