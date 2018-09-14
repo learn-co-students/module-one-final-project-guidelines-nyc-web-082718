@@ -13,8 +13,7 @@ require_relative "../app/models/word_link.rb"
 
 welcome
 # essay_or_rhyme
-# run_essay_editor
-run_rhymer
+run_essay_editor
   # binding.pry
 
 
