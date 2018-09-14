@@ -218,17 +218,17 @@ class Character < ActiveRecord::Base
     if array.sample == true
       if self.thirst > 1
         self.decrement!(:thirst, 2)
-        puts "Warning! Your thirst stat is down to 2! You must drink more water!" if self.thirst == 2
+        puts "Warning! Your thirst stat is down to 2! You must drink more water!".colorize(:yellow).blink if self.thirst == 2
       end
       if self.hunger > 1
         self.decrement!(:hunger, 2)
-        puts "Warning! Your hunger stat is down to 2! You must eat something!" if self.hunger == 2
+        puts "Warning! Your hunger stat is down to 2! You must eat something!".colorize(:yellow).blink if self.hunger == 2
       end
       if self.sleep > 1
         self.decrement!(:sleep, 2)
-        puts "Warning! Your sleep stat is down to 2! You must get some rest!" if self.sleep == 2
+        puts "Warning! Your sleep stat is down to 2! You must get some rest!".colorize(:yellow).blink if self.sleep == 2
       end
-      puts "Oh no! Bad luck! Your thirst, hunger, and sleep stats have decreased!"
+      puts "Oh no! Bad luck! Your thirst, hunger, and sleep stats have decreased!".colorize(:light_red)
     end
     self.update(health: self.create_health)
   end

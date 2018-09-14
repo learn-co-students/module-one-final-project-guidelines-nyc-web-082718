@@ -67,8 +67,10 @@ def quit_game
 end
 
 def run
-
-  puts "Welcome to our world! What is your character's name?"
+  a = Artii::Base.new
+  puts a.asciify('The Explorer'.underline)
+  puts " "
+  puts "Welcome adventurer! What is your character's name?".colorize(:yellow)
   name = gets.chomp
   character = Character.new_character(name)
   character.update(health: character.create_health)
