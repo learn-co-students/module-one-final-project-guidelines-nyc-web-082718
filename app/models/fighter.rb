@@ -8,20 +8,23 @@ class Fighter < ActiveRecord::Base
   end
 
   def self.fighter_select
-    self.possible_opponents.where(champ: false).sample
+    possible_opponents.where(champ: false).sample
   end
 
-  def self.champ_select
-    self.possible_opponents.where(champ: true).sample
+  def champ_select
+    possible_opponents.where(champ: true).sample
   end
 
   def fighter_name
-    self.name
+    name
   end
 
   def id_select
-    self.id
+    id
   end
 
-# binding.pry
+
+  def self.champs
+    where(champ: true)
+  end
 end
