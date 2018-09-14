@@ -10,7 +10,7 @@ Installation Instructions:
 We are assuming that you already have Ruby 2.3.3.
 
 - Download the zip folder onto your computer.
-- Open Terminal and ensure that you are in the program's main directory folder.
+- Open Terminal and navigate to the program's main directory folder.
 - Make sure to type 'bundle install' to install all of the program's gems.
 - Last but not least, type 'bundle exec ruby lib/run.rb' to start the game.
 - Enjoy!
