@@ -59,7 +59,7 @@ def add_related_words_to_db(word_string)
     # word_objects_array looks like:
         # [{word}{word}...]
   words_without_spaces_array = word_objects_array.delete_if do |word_hash|
-    word_hash["word"].include? " "
+    (word_hash["word"].include? " ") || (word_hash["tags"] == nil)
   end
 
   words_without_spaces_array.each do |word_hash|
@@ -96,7 +96,7 @@ def query(query_type, input)
     "rel_syn"
   end
 
-  url = "https://api.datamuse.com/words?#{param}=#{input}&md=sp"
+  url = "https://api.datamuse.com/words?#{param}=#{input}&md=p"
   words_array = get_words_from_api(url)
 end
 
