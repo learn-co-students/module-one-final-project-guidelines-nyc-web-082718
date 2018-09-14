@@ -213,7 +213,7 @@ class Character < ActiveRecord::Base
   end
 
   def decrease_stats
-    array = [false, false, false, false, false, false, false, true]
+    array = [false, false, false, false, false, false, false, false, true]
     array.sample
     if array.sample == true
       if self.thirst > 1
