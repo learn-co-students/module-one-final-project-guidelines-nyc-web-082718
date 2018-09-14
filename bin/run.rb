@@ -12,5 +12,6 @@ require_relative "../lib/editor.rb"
 require_relative "../app/models/long_word.rb"
 require_relative "../app/models/short_word.rb"
 require_relative "../app/models/word_link.rb"
+require_relative "../app/models/text.rb"
 
 run_essay_editor

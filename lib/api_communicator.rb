@@ -15,8 +15,6 @@ def add_word_and_related_words_to_db(word_string)
   original_word = find_or_add_word_to_db(original_word_hash)
 # part 2 ################################################
   add_related_words_to_db(word_string)   #part 2
-
-
 end
 
 
@@ -106,7 +104,6 @@ def get_words_from_api(url)
  response_string = RestClient.get(url)
  response_hash = JSON.parse(response_string)
 end
-
 
 def turn_original_hash_into_info_hash(word_hash)
   word_hash.delete("score")
