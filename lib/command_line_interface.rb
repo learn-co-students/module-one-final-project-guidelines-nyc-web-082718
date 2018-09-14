@@ -131,11 +131,11 @@ def match_loop(array)
   x = 0
   while x < 6
     if Player.last.losses < 3 && x < 5
-
-      Fight.create(user_id: Player.last.id, fighter_id: array[x].id)
+      binding.pry
+      Fight.create(user_id: Player.last.id, fighter_id: array[0][x].id)
         player_damage = 0
         computer_damage = 0
-        match_announcement(array[x].name)
+        match_announcement(array[0][x].name)
 
         while player_damage < 3 && computer_damage < 3
           puts "\n"
@@ -153,6 +153,8 @@ def match_loop(array)
               sleep 1
             else
               puts draw.sample
+              player_damage += 1
+              computer_damage += 1
               sleep 1
             end
 
@@ -167,6 +169,8 @@ def match_loop(array)
               sleep 1
             else
               puts draw.sample
+              player_damage += 1
+              computer_damage += 1
               sleep 1
             end
 
@@ -181,16 +185,19 @@ def match_loop(array)
               sleep 1
             else
               puts draw.sample
+              player_damage += 1
+              computer_damage += 1
               sleep 1
             end
           end
         end
 
-      player_damage == 3 ? take_loss_script(array[x].name) : take_win_script(array[x].name)
+      player_damage == 3 ? take_loss_script(array[0][x].name) : take_win_script(array[0][x].name)
       x += 1
 
     elsif Player.last.losses < 3 && x == 5
-      championship_announcement(array[x].name)
+      Fight.create(user_id: Player.last.id, fighter_id: array[0][x].id)
+      championship_announcement(array[0][x].name)
       player_damage = 0
       computer_damage = 0
       puts "\n"

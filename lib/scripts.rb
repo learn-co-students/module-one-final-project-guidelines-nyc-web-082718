@@ -6,6 +6,7 @@ def game_over_before_championship
 end
 
 def player_wins
+  puts "\n" "You Won!!!!!"
   puts "\n" "Congratulations to the new UFC Champion of the world! #{Player.last.name}!!!" "\n" "\n" "**************************************" "\n" "\n"
 end
 

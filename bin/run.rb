@@ -34,7 +34,7 @@ enter_the_ufc_script(difficulty)
 Fighter.possible_opponents
 opponents << fighter_generator
 #FIGHT METHODS
-match_loop(opponents[0])
+match_loop(opponents)
 
 
 
