@@ -130,13 +130,12 @@ end
 def match_loop(array)
   x = 0
   while x < 6
-
-    if Player.last.losses < 3
+    if Player.last.losses < 3 && x < 5
 
       Fight.create(user_id: Player.last.id, fighter_id: array[x].id)
         player_damage = 0
         computer_damage = 0
-         x == 5 ? championship_announcement(array[x].name) :  match_announcement(array[x].name)
+        match_announcement(array[x].name)
 
         while player_damage < 3 && computer_damage < 3
           puts "\n"
@@ -156,6 +155,7 @@ def match_loop(array)
               puts draw.sample
               sleep 1
             end
+
           elsif user_action == 2
             if com_action == 2
               puts kick_win.sample
@@ -169,6 +169,7 @@ def match_loop(array)
               puts draw.sample
               sleep 1
             end
+
           else
             if com_action == 1
               puts takedown_win.sample
@@ -185,19 +186,66 @@ def match_loop(array)
           end
         end
 
-        if player_damage == 3
-          puts "\n" "That was a tough fight, get back in the ring and shake off that loss."
-          losses = Player.last.losses
-          Player.last.update_column(:losses, losses + 1)
-          sleep 2
-          x += 1
-        else computer_damage == 3
-          puts "\n" "You defeated #{array[x].name}!!!"
-          wins = Player.last.wins
-          Player.last.update_column(:wins, wins + 1)
-          sleep 2
-          x += 1
+      player_damage == 3 ? take_loss_script(array[x].name) : take_win_script(array[x].name)
+      x += 1
 
+    elsif Player.last.losses < 3 && x == 5
+      championship_announcement(array[x].name)
+      player_damage = 0
+      computer_damage = 0
+      puts "\n"
+      user_action = moves
+      com_action = rand(3)
+      puts "\n"
+      if user_action == 1
+        if com_action == 1
+          puts punch_win.sample
+          computer_damage += 1
+          sleep 1
+        elsif com_action == 2
+          puts punch_loss.sample
+          player_damage += 1
+          sleep 1
+        else
+          puts draw.sample
+          sleep 1
+        end
+
+      elsif user_action == 2
+        if com_action == 2
+          puts kick_win.sample
+          computer_damage += 1
+          sleep 1
+        elsif com_action == 1
+          puts kick_loss.sample
+          player_damage += 1
+          sleep 1
+        else
+          puts draw.sample
+          sleep 1
+        end
+
+      else
+        if com_action == 1
+          puts takedown_win.sample
+          computer_damage += 1
+          sleep 1
+        elsif com_action == 2
+          puts takedown_loss.sample
+          player_damage += 1
+          sleep 1
+        else
+          puts draw.sample
+          sleep 1
+        end
+      end
+
+      if player_damage == 3
+        championship_loss_script
+        x += 1
+      else computer_damage == 3
+        player_wins
+        x += 1
       end
 
     else
@@ -206,5 +254,4 @@ def match_loop(array)
     end ##End if statement
   end #End while loop aka. Each individual fight
     # array logic
-  player_wins
 end

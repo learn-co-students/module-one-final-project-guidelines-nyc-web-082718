@@ -74,3 +74,22 @@ def enter_the_ufc_script(difficulty)
   sleep 1
 
 end
+
+
+def take_loss_script(name)
+  puts "\n" "That was a tough fight, #{name} is a good fighter, get back in the ring and shake off that loss."
+  losses = Player.last.losses
+  Player.last.update_column(:losses, losses + 1)
+  sleep 2
+end
+
+def take_win_script(name)
+  puts "\n" "You defeated #{name}!!!"
+  wins = Player.last.wins
+  Player.last.update_column(:wins, wins + 1)
+  sleep 2
+end
+
+def championship_loss_script
+  puts "\n" "That championship fight was wild ladies and gentleman!!! We go to the judges score cards. #{champion_name} is still your reigning champion! Better luck next time #{Player.last.name}"  "\n"
+end
