@@ -24,32 +24,16 @@ end
 
 
 def get_weight_class(gender)
- m_hash = {1=> "Strawweight", 2=> "Bantamweight", 3=> "Lightweight", 4=> "Welterweight", 5=> "Middleweight", 6=> "Light_Heavyweight", 7=> "Heavyweight"}
-
- f_hash = {1=> "Women_Strawweight", 2=> "Women_Flyweight", 3=> "Women_Bantamweight", 4=> "Women_Featherweight"}
-
- puts "\n""What is your fighter's weight class?"
- if gender == "m"
-   puts "Choose a number between 1-7"
-   puts "1. Strawweight"
-   puts "2. Bantamweight"
-   puts "3. Lightweight"
-   puts '4. Welterweight'
-   puts "5. Middleweight"
-   puts "6. Light Heavyweight"
-   puts "7. Heavyweight"
-   weight_class= m_hash[gets.chomp.to_i]
- elsif gender == "f"
-   puts "Choose a number between 1-4"
-   puts "1. Strawweight"
-   puts "2. Flyweight"
-   puts "3. Bantamweight"
-   puts "4. Featherweight"
-   weight_class = f_hash[gets.chomp.to_i]
- else
-   puts "Please choose a gender with the format M/F"
- end
- puts "That weight class is one of the toughest! Good luck!"
+ weight_class?
+ gender == "m" ? male_weight_classes : female_weight_classes
+ num = gets.chomp.to_i
+   if gender == "m"
+     weight_class= m_hash[num]
+   else
+     weight_class = f_hash[num]
+   end
+   sleep 1
+ thats_tough
  weight_class
 end
 
@@ -89,38 +73,6 @@ def complete_player_creation(formatted_name, formatted_nickname, gender, weight_
   formatted_weight_class = format_weight_class.join(" ")
 
   Player.create(name: full_name, gender: gender, weightclass: weight_class, wins: 0, losses: 0)
-end
-
-def match_announcement(fighter_name)
-  sleep 2
-  puts "\n""You've been matched against #{fighter_name}"
-  sleep 1
-  puts "\n""Ladies and Gentlemen! #{Player.last.name} vs. #{fighter_name}!"
-  sleep 1
-  puts "3"
-  sleep 1
-  puts "2"
-  sleep 1
-  puts "1"
-  sleep 1
-  puts "Fight!"
-  sleep 1
-end
-
-def championship_announcement(fighter_name)
-  sleep 2
-  puts "\n""You've been matched against the reigning champion of the world #{fighter_name}!!"
-  sleep 1
-  puts "\n""Ladies and Gentlemen! #{Player.last.name} vs. #{fighter_name}!"
-  sleep 1
-  puts "3"
-  sleep 1
-  puts "2"
-  sleep 1
-  puts "1"
-  sleep 1
-  puts "Fight!"
-  sleep 1
 end
 
  def move

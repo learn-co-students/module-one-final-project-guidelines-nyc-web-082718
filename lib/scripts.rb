@@ -1,4 +1,38 @@
 
+def male_weight_classes
+  puts "Choose a number between 1-7"
+  puts "1. Strawweight"
+  puts "2. Bantamweight"
+  puts "3. Lightweight"
+  puts '4. Welterweight'
+  puts "5. Middleweight"
+  puts "6. Light Heavyweight"
+  puts "7. Heavyweight"
+end
+
+def female_weight_classes
+  puts "Choose a number between 1-4"
+  puts "1. Strawweight"
+  puts "2. Flyweight"
+  puts "3. Bantamweight"
+  puts "4. Featherweight"
+end
+
+def m_hash
+  {1=> "Strawweight", 2=> "Bantamweight", 3=> "Lightweight", 4=> "Welterweight", 5=> "Middleweight", 6=> "Light_Heavyweight", 7=> "Heavyweight"}
+end
+
+def f_hash
+  {1=> "Women_Strawweight", 2=> "Women_Flyweight", 3=> "Women_Bantamweight", 4=> "Women_Featherweight"}
+end
+
+def weight_class?
+  puts "\n""What is your fighter's weight class?"
+end
+
+def thats_tough
+  puts "That weight class is one of the toughest! Good luck!"
+end
 
 def game_over_before_championship
   puts "\n" "Hey, I'm Dana White. You've lost your contract with the UFC. You lost too many times. Better luck next time #{Player.last.name}" "\n" "\n" "**************************************" "\n" "\n"
@@ -40,8 +74,37 @@ def draw
 ["These fighters are looking really tired!", "This fight is too close to call!", "How are they still on their feet?", "We've got an exciting fight!", "What an even match!", "Joe Rogan is going to regret missing this one!"]
 end
 
+def match_announcement(fighter_name)
+  sleep 2
+  puts "\n""You've been matched against #{fighter_name}"
+  sleep 1
+  puts "\n""Ladies and Gentlemen! #{Player.last.name} vs. #{fighter_name}!"
+  sleep 1
+  puts "3"
+  sleep 1
+  puts "2"
+  sleep 1
+  puts "1"
+  sleep 1
+  puts "Fight!"
+  sleep 1
+end
 
-
+def championship_announcement(fighter_name)
+  sleep 2
+  puts "\n""You've been matched against the reigning champion of the world #{fighter_name}!!"
+  sleep 1
+  puts "\n""Ladies and Gentlemen! #{Player.last.name} vs. #{fighter_name}!"
+  sleep 1
+  puts "3"
+  sleep 1
+  puts "2"
+  sleep 1
+  puts "1"
+  sleep 1
+  puts "Fight!"
+  sleep 1
+end
 
 def welcome
   puts "\n""Welcome to the UFC!"
