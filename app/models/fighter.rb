@@ -11,7 +11,7 @@ class Fighter < ActiveRecord::Base
     possible_opponents.where(champ: false).sample
   end
 
-  def champ_select
+  def self.champ_select
     possible_opponents.where(champ: true).sample
   end
 
@@ -22,7 +22,6 @@ class Fighter < ActiveRecord::Base
   def id_select
     id
   end
-
 
   def self.champs
     where(champ: true)

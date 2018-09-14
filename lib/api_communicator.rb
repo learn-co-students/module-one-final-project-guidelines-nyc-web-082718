@@ -13,16 +13,3 @@ end
 def match_announcement()
   puts ""
 end
-
-
-# def sort_fighters_by_weight_class(weight_class)
-#   fighters_sorted_by_weight_class = get_fighters_from_api.select do |dataset|
-#     dataset['weight_class'] == weight_class
-#   end
-#   fighters_sorted_by_weight_class
-# end
-#
-# def rank_fighters(array)
-#   fighters_ranked = array.sort_by {|fighter| fighter["wins"]}
-#   fighters_ranked
-# end
