@@ -24,7 +24,7 @@ end
 
 
 def get_weight_class(gender)
- m_hash = {1=> "Strawweight", 2=> "Bantamweight", 3=> "Lightweight", 4=> "Welterweight", 5=> "Middleweight", 6=> "Light_heavyweight", 7=> "Heavyweight"}
+ m_hash = {1=> "Strawweight", 2=> "Bantamweight", 3=> "Lightweight", 4=> "Welterweight", 5=> "Middleweight", 6=> "Light_Heavyweight", 7=> "Heavyweight"}
 
  f_hash = {1=> "Women_Strawweight", 2=> "Women_Flyweight", 3=> "Women_Bantamweight", 4=> "Women_Featherweight"}
 
@@ -131,7 +131,6 @@ def match_loop(array)
   x = 0
   while x < 6
     if Player.last.losses < 3 && x < 5
-      binding.pry
       Fight.create(user_id: Player.last.id, fighter_id: array[0][x].id)
         player_damage = 0
         computer_damage = 0
