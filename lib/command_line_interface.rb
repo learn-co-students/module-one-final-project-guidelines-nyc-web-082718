@@ -32,44 +32,60 @@ def help
 end
 
 def where_to_explore
+  sleep(0.7)
   puts "Where would you like to go? You can choose between: Forest, Desert, Lake, Cave"
 end
 
 def what_to_collect
+  sleep(0.7)
   puts "Which resource would you like to collect? You can choose between: wood, sand, water, stone"
 end
 
 def shelter_materials
+  sleep(0.7)
   puts "What would you like to make your shelter out of? You can choose between: wood, stone"
 end
 
 def what_to_forage
+  sleep(0.7)
   puts "What food would you like to forage for? You can choose between: berries, scorpions, fish, squirrels"
 end
 
 def where_am_i(current_location,character)
   if current_location == CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 1).environment
+    sleep(0.7)
     puts "You are currently in the starter area."
+    sleep(0.7)
   elsif current_location == CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 2).environment
+    sleep(0.7)
     puts "You are currently in the forest."
+    sleep(0.7)
   elsif current_location == CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 3).environment
+    sleep(0.7)
     puts "You are currently in the desert."
+    sleep(0.7)
   elsif current_location == CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 4).environment
+    sleep(0.7)
     puts "You are currently by the lake."
+    sleep(0.7)
   elsif current_location == CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 5).environment
+    sleep(0.7)
     puts "You are currently in the cave."
+    sleep(0.7)
   end
 end
 
 def quit_game
-  puts "Thanks for playing!"
   sleep(0.7)
+  puts "Thanks for playing!"
+  sleep(0.8)
 end
 
 def run
   a = Artii::Base.new
   puts a.asciify('The Explorer'.underline)
-  puts " "
+  puts "\n"
+  sleep(0.7)
   puts "Welcome adventurer! What is your character's name?".colorize(:yellow)
   name = gets.chomp
   character = Character.new_character(name)
@@ -101,15 +117,19 @@ def run
           if explore_command == "Forest"
             current_location = CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 2).environment
             puts "You are now in the forest."
+            sleep(0.7)
           elsif explore_command == "Desert"
             current_location = CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 3).environment
             puts "You are now in the desert."
+            sleep(0.7)
           elsif explore_command == "Lake"
             current_location = CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 4).environment
             puts "You are now by the lake."
+            sleep(0.7)
           elsif explore_command == "Cave"
             current_location = CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 5).environment
             puts "You are now in the cave."
+            sleep(0.7)
           end
       when "build shelter"
         shelter_materials
@@ -151,7 +171,7 @@ def run
         help
       end
       unless character.health > 0
-        abort("Your character has died. Thanks for playing!")
+        abort(a.asciify("Your character has died. Thanks for playing!".colorize(:red)))
       end
     end
 end
