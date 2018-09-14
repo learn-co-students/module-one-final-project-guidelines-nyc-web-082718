@@ -80,7 +80,7 @@ class Text
       end # end if short_string?(word)
     end # end new_words_array = words_array.map do |word|
 
-    new_text_object.text = new_words_array.join(" ")
+    new_text_object.text = new_words_array.join(" ").gsub(/ \p{P} /) {|t| t.gsub(" ", "")}
     new_text_object
   end
 
@@ -153,7 +153,7 @@ class Text
       end # end if short_string?(word)
     end # end new_words_array = words_array.map do |word|
 
-    new_text_object.text = new_words_array.join(" ")
+    new_text_object.text = new_words_array.join(" ").gsub(/ \p{P} /) {|t| t.gsub(" ", "")}
     new_text_object
   end
 
@@ -226,7 +226,7 @@ class Text
       end # end if short_string?(word)
     end # end new_words_array = words_array.map do |word|
 
-    new_text_object.text = new_words_array.join(" ")
+    new_text_object.text = new_words_array.join(" ").gsub(/ \p{P} /) {|t| t.gsub(" ", "")}
     new_text_object
   end
 
@@ -298,7 +298,7 @@ class Text
       end # end if short_string?(word)
     end # end new_words_array = words_array.map do |word|
 
-    new_text_object.text = new_words_array.join(" ")
+    new_text_object.text = new_words_array.join(" ").gsub(/ \p{P} /) {|t| t.gsub(" ", "")}
     new_text_object
   end
 
