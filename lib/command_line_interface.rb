@@ -105,7 +105,7 @@ end
 
 def run
   a = Artii::Base.new
-  puts a.asciify('The Explorer')
+  puts a.asciify('The Explorer').colorize(:yellow)
   sleep(0.7)
   puts "\n"
   puts "Welcome adventurer! What is your name?".colorize(:yellow)
@@ -172,11 +172,41 @@ def run
             puts "You are now in the forest.".colorize(:yellow)
             sleep(0.7)
             puts "\n"
+            puts '            ,@@@@@@@,'.colorize(:yellow)
+            puts '    ,,,.   ,@@@@@@/@@,  .oo8888o.'.colorize(:yellow)
+            puts '  ,&%%&%&&%,@@@@@/@@@@@@,8888\88/8o'.colorize(:yellow)
+            puts ',%&\%&&%&&%,@@@\@@@/@@@88\88888/88`'.colorize(:yellow)
+            puts '%&&%&%&/%&&%@@\@@/ /@@@88888\88888`'.colorize(:yellow)
+            puts '%&&%/ %&%%&&@@\ V /@@ `88\ 8`/88`'.colorize(:yellow)
+            puts '`&%\ ` /%&`    |.|        \ `|8'.colorize(:yellow)
+            puts '    |o|        | |         | |'.colorize(:yellow)
+            puts '    |.|        | |         | |'.colorize(:yellow)
+            puts '\ \/ ._\//_/__/  ,\_//_\ \/.  \_//__/_'.colorize(:yellow)
+            sleep(0.7)
+            puts "\n"
           elsif explore_command == "Desert"
             current_location = CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 3).environment
             puts "\n"
             sleep(0.7)
             puts "You are now in the desert.".colorize(:yellow)
+            sleep(0.7)
+            puts "\n"
+            puts '    .    _    +     .  ______   .          .'.colorize(:yellow)
+            puts ' (      /|\      .    |      \      .   +'.colorize(:yellow)
+            puts '     . |||||     _    | |   | | ||         .'.colorize(:yellow)
+            puts '.      |||||    | |  _| | | | |_||    .'.colorize(:yellow)
+            puts '   /\  ||||| .  | | |   | |      |       .'.colorize(:yellow)
+            puts '__||||_|||||____| |_|_____________\__________'.colorize(:yellow)
+            puts '. |||| |||||  /\   _____      _____  .   .'.colorize(:yellow)
+            puts '  |||| ||||| ||||   .   .  .         ________'.colorize(:yellow)
+            puts ' . \|`-`|||| ||||    __________       .    . '.colorize(:yellow)
+            puts '    \__ |||| ||||      .          .     .'.colorize(:yellow)
+            puts ' __    ||||`-`|||  .       .    __________'.colorize(:yellow)
+            puts '.    . |||| ___/  ___________             .'.colorize(:yellow)
+            puts '   . _ ||||| . _               .   _________'.colorize(:yellow)
+            puts '_   ___|||||__  _ \|--|/    .          _'.colorize(:yellow)
+            puts '     _ `---`    .)=\oo|=(.   _   .   .    .'.colorize(:yellow)
+            puts '_  ^      .  -    . \.|'.colorize(:yellow)
             sleep(0.7)
             puts "\n"
           elsif explore_command == "Lake"
@@ -186,11 +216,53 @@ def run
             puts "You are now by the lake.".colorize(:yellow)
             sleep(0.7)
             puts "\n"
+            puts '                                             \ _ /'.colorize(:yellow)
+            puts '                                            - (_) -'.colorize(:yellow)
+            puts '                                             /   \ '.colorize(:yellow)
+            puts '                                       '.colorize(:yellow)
+            puts '                                       '.colorize(:yellow)
+            puts '                                       '.colorize(:yellow)
+            puts '                                       '.colorize(:yellow)
+            puts '                                       '.colorize(:yellow)
+            puts '                                       '.colorize(:yellow)
+            puts '---....______ __ _ _ _____ __ _ ___ ___ __ _ _ _____ _ _ ___'.colorize(:yellow)
+            puts '                    `---...___ =-= = -_= -=_= _-=_-_ -=- =-_'.colorize(:yellow)
+            puts '                              ```--.._= -_= -_= _-=- -_= _=-'.colorize(:yellow)
+            puts '                                      ``--._=-_ =-=_-= _-= _'.colorize(:yellow)
+            puts '                                            ``-._=_-=_- =_-='.colorize(:yellow)
+            puts '                                                 `-._-=_-_=-'.colorize(:yellow)
+            puts '                                                     `-._=-_'.colorize(:yellow)
+            puts '                                                         `-.'.colorize(:yellow)
+            sleep(0.7)
+            puts "\n"
           elsif explore_command == "Cave"
             current_location = CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 5).environment
             puts "\n"
             sleep(0.7)
             puts "You are now in the cave.".colorize(:yellow)
+            sleep(0.7)
+            puts "\n"
+            puts '                     / \ '.colorize(:yellow)
+            puts '                    /   \              /`\       _ '.colorize(:yellow)
+            puts '\_..           /`.,/     \_         .,`   \     / \_'.colorize(:yellow)
+            puts '    \         /            \      _/       \_  /    \     _ '.colorize(:yellow)
+            puts '     \__,.   /              \    /           \/.,   _|  _/ \ '.colorize(:yellow)
+            puts '          \_/                \  /`,.,/\      \_ \_/  \/    \ '.colorize(:yellow)
+            puts '                           _  \/   /    `,../\,.\    _/      \ '.colorize(:yellow)
+            puts '             /           _/m\  \  /    |         \  /.,/`\   _\ '.colorize(:yellow)
+            puts '           _/           /MMmm\  \_     |          \/      \_/  \  '.colorize(:yellow)
+            puts '          /      \     |MMMMmm|   \__   \          \_       \   \_  '.colorize(:yellow)
+            puts '                  \   /MMMMMMm|      \   \           \       \    \  '.colorize(:yellow)
+            puts '                   \  |MMMMMMmm\      \___            \_      \_   \  '.colorize(:yellow)
+            puts '                    \|MMMMMMMMmm|____.`  /\_            \       \   \_ '.colorize(:yellow)
+            puts '                    / .,___________...,,`   \            \   \        \ '.colorize(:yellow)
+            puts '                   /       \          |      \    |__     \   \_       \ '.colorize(:yellow)
+            puts '                 _/        |           \      \_     \     \    \       \_ '.colorize(:yellow)
+            puts '                /                               \     \     \_   \        \ '.colorize(:yellow)
+            puts '                                                 \     \      \   \__      \ '.colorize(:yellow)
+            puts '                                                  \     \_     \     \      \ '.colorize(:yellow)
+            puts '                                                   |      \     \     \      \ '.colorize(:yellow)
+            puts '                                                    \            |            \ '.colorize(:yellow)
             sleep(0.7)
             puts "\n"
           end
@@ -234,7 +306,7 @@ def run
         help
       end
       unless character.health > 0
-        abort(("Your character has died. Thanks for playing!").colorize(:light_red).blink)
+        abort(a.asciify("Your character has died.").colorize(:light_red))
       end
     end
 end
