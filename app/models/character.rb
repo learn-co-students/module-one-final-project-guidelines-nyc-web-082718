@@ -324,7 +324,7 @@ class Character < ActiveRecord::Base
   end
 
   def decrease_stats
-    array = [false, false, false, false, false, false, false, false, true]
+    array = [jofalse, false, true]
     array.sample
     if array.sample == true
       if self.thirst > 0
@@ -354,6 +354,7 @@ class Character < ActiveRecord::Base
           puts "\n"
         end
       end
+      puts "\n"
       puts "Oh no! Bad luck! Your thirst, hunger, and sleep stats have decreased!".colorize(:light_red)
       sleep(0.7)
     end
