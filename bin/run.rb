@@ -7,6 +7,8 @@ db = ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: 'db/d
 
 require_relative "../lib/api_communicator.rb"
 require_relative "../lib/command_line_interface.rb"
+require_relative "../lib/editor.rb"
+
 require_relative "../app/models/long_word.rb"
 require_relative "../app/models/short_word.rb"
 require_relative "../app/models/word_link.rb"
