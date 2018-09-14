@@ -6,6 +6,12 @@ require_relative "../lib/scripts.rb"
 require_relative "../lib/fight_logic.rb"
 
 
+slash = "\\"
+puts "\n"
+puts "   O      O   "
+puts "    #{slash}   o--#{slash}  "
+puts "    /#{slash}     /#{slash}  "
+
 
 response_hash = get_fighters_from_api
 
