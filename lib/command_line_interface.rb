@@ -121,29 +121,29 @@ def run
   sleep(0.7)
   puts "\n"
   puts "\n"
-  puts '            _  '
-  puts '           (_) '
-  puts '           |=| '
-  puts '           |=| '
-  puts '       /|__|_|__|\ '
-  puts '      (    ( )    ) '
-  puts '       \|\/\*/\/|/ '
-  puts '          | Y | '
-  puts '          | | | '
-  puts '          | | | '
-  puts '         _| | | '
-  puts '      __/ | | |\ '
-  puts '     /  \ | | |  \ '
-  puts '        __| | |   | '
-  puts '     /\/  | | |   |\ '
-  puts '     <    +\| |\ />  \ '
-  puts '       >    +\  LJ    | '
-  puts '             + \+ \  < \ '
-  puts '    (O)        +   |    ) '
-  puts '     |              \  /\ '
-  puts '   ( | )     (o)     \/  ) '
-  puts '  _\ \|/ /__( | )_____)_/ '
-  puts '           \ \|/ / '
+  puts '            _  '.colorize(:yellow).blink
+  puts '           (_) '.colorize(:yellow).blink
+  puts '           |=| '.colorize(:yellow).blink
+  puts '           |=| '.colorize(:yellow).blink
+  puts '       /|__|_|__|\ '.colorize(:yellow).blink
+  puts '      (    ( )    ) '.colorize(:yellow).blink
+  puts '       \|\/\*/\/|/ '.colorize(:yellow).blink
+  puts '          | Y | '.colorize(:yellow).blink
+  puts '          | | | '.colorize(:yellow).blink
+  puts '          | | | '.colorize(:yellow).blink
+  puts '         _| | | '.colorize(:yellow).blink
+  puts '      __/ | | |\ '.colorize(:yellow).blink
+  puts '     /  \ | | |  \ '.colorize(:yellow).blink
+  puts '        __| | |   | '.colorize(:yellow).blink
+  puts '     /\/  | | |   |\ '.colorize(:yellow).blink
+  puts '     <    +\| |\ />  \ '.colorize(:yellow).blink
+  puts '       >    +\  LJ    | '.colorize(:yellow).blink
+  puts '             + \+  \ < \ '.colorize(:yellow).blink
+  puts '      (O)      +    |   ) '.colorize(:yellow).blink
+  puts '       |             \  /\ '.colorize(:yellow).blink
+  puts '     ( | )    (o)     \/  ) '.colorize(:yellow).blink
+  puts '   _\ \|/ /__( | )_____)_/ '.colorize(:yellow).blink
+  puts '            \ \|/ / '.colorize(:yellow).blink
 
   current_location = CharacterEnvironment.all.find_by(character_id: character.id, environment_id: 1).environment
 
