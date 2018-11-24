@@ -11,6 +11,6 @@ We are assuming that you already have Ruby 2.3.3.
 
 - Download the zip folder onto your computer.
 - Open Terminal and navigate to the program's main directory folder.
-- Make sure to type 'bundle install' to install all of the program's gems.
-- Last but not least, type 'bundle exec ruby lib/run.rb' to start the game.
+- Make sure to type 'bundle install' to install all of the program's gems and then run 'rake db:migrate && rake db:seed'.
+- Last but not least, type 'bundle exec ruby bin/run.rb' to start the game.
 - Enjoy!
