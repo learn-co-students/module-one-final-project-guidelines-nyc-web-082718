@@ -14,3 +14,5 @@ We are assuming that you already have Ruby 2.3.3.
 - Make sure to type 'bundle install' to install all of the program's gems and then run 'rake db:migrate && rake db:seed'.
 - Last but not least, type 'bundle exec ruby bin/run.rb' to start the game.
 - Enjoy!
+
+Copyright 2018 - Alexandra Aulum-Pedersen
